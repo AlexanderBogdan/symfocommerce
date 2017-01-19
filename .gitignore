@@ -16,3 +16,4 @@
 /web/bundles/
 .idea/
 bin/symfony_requirements
+var/SymfonyRequirements.php

@@ -3,6 +3,7 @@
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('bundles/shop/css/dashboard-style.css') }}" rel="stylesheet">
+    <link href="{{ asset('includes/custom/css/chosen/chosen.min.css') }}" rel="stylesheet">
 {% endblock stylesheets %}
 
 {% block body %}
@@ -49,6 +50,10 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('bundles/shop/js/bootbox.min.js') }}"></script>
+    <script src="{{ asset('includes/custom/js/chosen/chosen.jquery.min.js') }}"></script>
+    <script>
+        $('select').chosen();
+    </script>
     <script>
         $(function() {
             bootbox.addLocale('{{ app.request.locale }}', {
