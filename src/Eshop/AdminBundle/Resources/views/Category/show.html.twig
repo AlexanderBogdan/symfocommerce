@@ -20,6 +20,10 @@
             <td>{{ entity.slug }}</td>
         </tr>
         <tr>
+            <th>{{ 'Parent'|trans }}</th>
+            <td>{{ entity.parent }}</td>
+        </tr>
+        <tr>
             <th>{{ 'Description'|trans }}</th>
             <td>
                 {{ entity.description|rawdescr|nl2br }}

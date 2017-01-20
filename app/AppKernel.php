@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             new Oneup\UploaderBundle\OneupUploaderBundle(),
             new Presta\SitemapBundle\PrestaSitemapBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

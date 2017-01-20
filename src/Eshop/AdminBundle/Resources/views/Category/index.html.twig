@@ -23,6 +23,7 @@
         <tr>
             <th class="col-md-1">{{ knp_pagination_sortable(entities, 'Name'|trans, 'c.name') }}</th>
             <th class="col-md-9">{{ knp_pagination_sortable(entities, 'Description'|trans, 'c.description') }}</th>
+            <th class="col-md-1">{{ knp_pagination_sortable(entities, 'Parent'|trans, 'c.parent') }}</th>
             <th class="col-md-1">{{ knp_pagination_sortable(entities, 'Photo'|trans, 'c.path') }}</th>
             <th class="col-md-1">{{ 'Actions'|trans }}</th>
         </tr>
@@ -35,6 +36,9 @@
                 </td>
                 <td>
                     {{ entity.description|slice(0,300) }}...
+                </td>
+                <td>
+                    {{ entity.parent }}
                 </td>
                 <td>
                     {% if entity.path %}

@@ -8,10 +8,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Category
  *
+ * @Gedmo\Tree(type="closure")
+ * @Gedmo\TreeClosure(class="Eshop\ShopBundle\Entity\CategoryClosure")
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Eshop\ShopBundle\Repository\CategoryRepository")
  * @UniqueEntity("slug"),
@@ -76,6 +79,13 @@ class Category
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     private $parent;
+
+    /**
+     *
+     * @ORM\Column(name="level", type="integer", nullable=true)
+     * @Gedmo\TreeLevel
+     */
+    private $level;
 
     /**
      * @var \DateTime
@@ -473,6 +483,27 @@ class Category
     public function getParent()
     {
         return $this->parent;
+    }
+
+    /**
+     * Set level
+     *
+     * @param \Eshop\ShopBundle\Entity\Category $level
+     * @return Category
+     */
+    public function setLevel($level)
+    {
+        $this->level = $level;
+    }
+
+    /**
+     * Get level
+     *
+     * @return \Eshop\ShopBundle\Entity\Category
+     */
+    public function getLevel()
+    {
+        return $this->level;
     }
 
     /**
