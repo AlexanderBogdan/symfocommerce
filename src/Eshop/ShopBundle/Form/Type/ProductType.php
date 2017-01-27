@@ -31,6 +31,7 @@ class ProductType extends AbstractType
                 'choice_label' => 'name'
             ))
             ->add('price', NumberType::class)
+            ->add('oldPrice', NumberType::class)
             ->add('category', EntityType::class, array(
                 'required' => true,
                 'multiple' => false,

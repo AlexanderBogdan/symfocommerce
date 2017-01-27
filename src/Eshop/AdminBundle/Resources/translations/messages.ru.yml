@@ -119,3 +119,6 @@ not registered: не зарегистрирован
 Product deleted: продукт удален
 Are you sure?: Вы уверены?
 OK: OK
+Type: Тип
+Old price: Старая цена
+Price should be more than old price!: Старая цена должна быть меньше текущей!

@@ -2,6 +2,7 @@
 
 namespace Eshop\ShopBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,6 +29,15 @@ class ProductType
      */
     private $name;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="type")
+     **/
+    private $products;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
 
     /**
      * Get id

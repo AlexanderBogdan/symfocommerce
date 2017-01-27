@@ -13,6 +13,11 @@
 
     {{ form_start(form) }}
     <div class="form-group">
+        <div class="col-sm-10">
+            {{ form_errors(form.oldPrice) }}
+        </div>
+    </div>
+    <div class="form-group">
         {{ form_label(form.name, 'Name'|trans) }}
         <div class="col-sm-10">
             {{ form_widget(form.name, {'attr': {'class': 'product-name'}}) }}
@@ -34,6 +39,12 @@
         {{ form_label(form.price, 'Price'|trans) }}
         <div class="col-sm-10">
             {{ form_widget(form.price) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.oldPrice, 'Old price'|trans) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.oldPrice) }}
         </div>
     </div>
     <div class="form-group">

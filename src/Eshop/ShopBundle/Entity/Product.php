@@ -2,10 +2,12 @@
 
 namespace Eshop\ShopBundle\Entity;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Product
@@ -61,6 +63,13 @@ class Product
      * @ORM\Column(name="price", type="float")
      */
     private $price;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="old_price", type="float")
+     */
+    private $oldPrice;
 
     /**
      * @var string
@@ -283,6 +292,29 @@ class Product
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * Set oldPrice
+     *
+     * @param float $oldPrice
+     * @return Product
+     */
+    public function setOldPrice($oldPrice)
+    {
+        $this->oldPrice = $oldPrice;
+
+        return $this;
+    }
+
+    /**
+     * Get oldPrice
+     *
+     * @return float
+     */
+    public function getOldPrice()
+    {
+        return $this->oldPrice;
     }
 
     /**
@@ -658,5 +690,26 @@ class Product
     public function getDeleted()
     {
         return $this->deleted;
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function isOldPriceLessThanPrice(ExecutionContextInterface $context)
+    {
+        $price = $this->getPrice();
+        $oldPrice = $this->getOldPrice();
+
+        if ($oldPrice >= $price) {
+            $context->buildViolation('Price should be more than old price!')
+                ->atPath('oldPrice')
+                ->addViolation()
+            ;
+//
+//            $request->getSession()
+//                ->getFlashBag()
+//                ->add('error', 'Price should be more than old price!')
+//            ;
+        }
     }
 }
