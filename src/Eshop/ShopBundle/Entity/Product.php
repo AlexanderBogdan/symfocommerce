@@ -50,6 +50,12 @@ class Product
     private $description;
 
     /**
+     * @ORM\ManyToOne(targetEntity="ProductType", inversedBy="products")
+     * @ORM\JoinColumn(name="product_type_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $type;
+
+    /**
      * @var float
      *
      * @ORM\Column(name="price", type="float")
@@ -231,6 +237,29 @@ class Product
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     * @return Product
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**

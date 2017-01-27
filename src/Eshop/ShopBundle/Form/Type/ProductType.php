@@ -4,6 +4,7 @@ namespace Eshop\ShopBundle\Form\Type;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -23,15 +24,21 @@ class ProductType extends AbstractType
             ->add('name', TextType::class)
             ->add('slug', TextType::class)
             ->add('description', TextareaType::class)
+            ->add('type', EntityType::class, array(
+                'required' => true,
+                'multiple' => false,
+                'class' => 'Eshop\ShopBundle\Entity\ProductType',
+                'choice_label' => 'name'
+            ))
             ->add('price', NumberType::class)
             ->add('category', EntityType::class, array(
-                'required'  => true,
+                'required' => true,
                 'multiple' => false,
                 'class' => 'Eshop\ShopBundle\Entity\Category',
                 'choice_label' => 'name'
             ))
             ->add('manufacturer', EntityType::class, array(
-                'required'  => true,
+                'required' => true,
                 'multiple' => false,
                 'class' => 'Eshop\ShopBundle\Entity\Manufacturer',
                 'choice_label' => 'name'
@@ -40,13 +47,12 @@ class ProductType extends AbstractType
             ->add('metaKeys', TextType::class)
             ->add('metaDescription', TextType::class)
             ->add('measure', EntityType::class, array(
-                'required'  => true,
+                'required' => true,
                 'multiple' => false,
                 'expanded' => false,
                 'class' => 'Eshop\ShopBundle\Entity\Measure',
                 'choice_label' => 'name'))
-            ->add('measureQuantity', IntegerType::class)
-        ;
+            ->add('measureQuantity', IntegerType::class);
     }
 
     /**
