@@ -47,6 +47,15 @@ class ProductType extends AbstractType
             ->add('quantity', IntegerType::class)
             ->add('metaKeys', TextType::class)
             ->add('metaDescription', TextType::class)
+            ->add('material', ChoiceType::class, array(
+                'required' => false,
+                'choices' => [
+                    'Дерево' => 'Дерево',
+                    'Пластик' => 'Пластик',
+                    'Резина' => 'Резина',
+                    'Металл' => 'Металл,'
+                ]
+            ))
             ->add('measure', EntityType::class, array(
                 'required' => true,
                 'multiple' => false,

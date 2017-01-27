@@ -37,6 +37,7 @@ class Product
      */
 
     private $slug;
+
     /**
      * @var string
      *
@@ -84,6 +85,13 @@ class Product
      * @ORM\Column(name="meta_description", type="text", nullable=true)
      */
     private $metaDescription;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="material", type="string", length=255)
+     */
+    private $material;
 
     /**
      * @var \DateTime
@@ -463,6 +471,29 @@ class Product
         $this->metaDescription = $metaDescription;
 
         return $this;
+    }
+
+    /**
+     * Set material
+     *
+     * @param string $material
+     * @return Product
+     */
+    public function setMaterial($material)
+    {
+        $this->material = $material;
+
+        return $this;
+    }
+
+    /**
+     * Get material
+     *
+     * @return string
+     */
+    public function getMaterial()
+    {
+        return $this->material;
     }
 
     /**
