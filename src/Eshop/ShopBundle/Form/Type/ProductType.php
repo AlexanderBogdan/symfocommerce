@@ -53,7 +53,15 @@ class ProductType extends AbstractType
                     'Дерево' => 'Дерево',
                     'Пластик' => 'Пластик',
                     'Резина' => 'Резина',
-                    'Металл' => 'Металл,'
+                    'Металл' => 'Металл',
+                ]
+            ))
+            ->add('age', ChoiceType::class, array(
+                'required' => false,
+                'choices' => [
+                    NULL => '',
+                    'm' => 'Мальчик',
+                    'f' => 'Девочка',
                 ]
             ))
             ->add('measure', EntityType::class, array(

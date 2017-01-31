@@ -94,6 +94,13 @@ class Product
     private $material;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="male", type="string", length=255)
+     */
+    private $male;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="date_created", type="datetime")
@@ -494,6 +501,29 @@ class Product
     public function getMaterial()
     {
         return $this->material;
+    }
+
+    /**
+     * Set male
+     *
+     * @param string $male
+     * @return Product
+     */
+    public function setMale($male)
+    {
+        $this->male = $male;
+
+        return $this;
+    }
+
+    /**
+     * Get male
+     *
+     * @return string
+     */
+    public function getMale()
+    {
+        return $this->male;
     }
 
     /**
