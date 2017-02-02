@@ -56,7 +56,7 @@ class ProductType extends AbstractType
                     'Металл' => 'Металл',
                 ]
             ))
-            ->add('age', ChoiceType::class, array(
+            ->add('male', ChoiceType::class, array(
                 'required' => false,
                 'choices' => [
                     NULL => '',
