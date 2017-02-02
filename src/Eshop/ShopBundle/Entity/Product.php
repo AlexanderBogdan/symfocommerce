@@ -761,16 +761,11 @@ class Product
         $price = $this->getPrice();
         $oldPrice = $this->getOldPrice();
 
-        if ($oldPrice >= $price) {
+        if ($oldPrice <= $price) {
             $context->buildViolation('Price should be more than old price!')
                 ->atPath('oldPrice')
                 ->addViolation()
             ;
-//
-//            $request->getSession()
-//                ->getFlashBag()
-//                ->add('error', 'Price should be more than old price!')
-//            ;
         }
     }
 }
