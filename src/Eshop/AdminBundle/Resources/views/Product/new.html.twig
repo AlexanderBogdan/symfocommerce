@@ -18,6 +18,11 @@
         </div>
     </div>
     <div class="form-group">
+        <div class="col-sm-10">
+            {{ form_errors(form.ageFrom) }}
+        </div>
+    </div>
+    <div class="form-group">
         {{ form_label(form.name, 'Name'|trans) }}
         <div class="col-sm-10">
             {{ form_widget(form.name, {'attr': {'class': 'product-name'}}) }}
@@ -33,6 +38,24 @@
         {{ form_label(form.type, 'Type'|trans) }}
         <div class="col-sm-10">
             {{ form_widget(form.type, {'attr': {'class': 'product-type'}}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.male, 'Male'|trans) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.male, {'attr': {'class': 'product-male'}}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.ageFrom, 'Age From'|trans) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.ageFrom, {'attr': {'class': 'product-age-from'}}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(form.ageTo, 'Age To'|trans) }}
+        <div class="col-sm-10">
+            {{ form_widget(form.ageTo, {'attr': {'class': 'product-age-to'}}) }}
         </div>
     </div>
     <div class="form-group">

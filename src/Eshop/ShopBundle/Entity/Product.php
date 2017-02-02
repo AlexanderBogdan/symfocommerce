@@ -101,6 +101,20 @@ class Product
     private $male;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="age_from", type="integer")
+     */
+    private $ageFrom;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="age_to", type="integer")
+     */
+    private $ageTo;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="date_created", type="datetime")
@@ -527,6 +541,52 @@ class Product
     }
 
     /**
+     * Set ageFrom
+     *
+     * @param string $ageFrom
+     * @return Product
+     */
+    public function setAgeFrom($ageFrom)
+    {
+        $this->ageFrom = $ageFrom;
+
+        return $this;
+    }
+
+    /**
+     * Get ageFrom
+     *
+     * @return string
+     */
+    public function getAgeFrom()
+    {
+        return $this->ageFrom;
+    }
+
+    /**
+     * Set ageTo
+     *
+     * @param string $ageTo
+     * @return Product
+     */
+    public function setAgeTo($ageTo)
+    {
+        $this->ageTo = $ageTo;
+
+        return $this;
+    }
+
+    /**
+     * Get ageTo
+     *
+     * @return string
+     */
+    public function getAgeTo()
+    {
+        return $this->ageTo;
+    }
+
+    /**
      * Get metaDescription
      *
      * @return string
@@ -766,6 +826,24 @@ class Product
                 ->atPath('oldPrice')
                 ->addViolation()
             ;
+        }
+    }
+
+    /**
+     * @Assert\Callback
+     */
+    public function checkAgeFromLesstThenAgeTo(ExecutionContextInterface $context)
+    {
+        $ageFrom = $this->getAgeFrom();
+        $ageTo = $this->getAgeTo();
+
+        if (!empty($ageTo)
+            && !empty($ageFrom)
+            && $ageTo < $ageFrom
+        ) {
+            $context->buildViolation('Age to should be more than age from!')
+                ->atPath('ageFrom')
+                ->addViolation();
         }
     }
 }
