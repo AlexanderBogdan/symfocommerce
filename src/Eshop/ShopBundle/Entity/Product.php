@@ -117,9 +117,9 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="country", type="simple_array", length=255, nullable=true)
+     * @ORM\Column(name="country_manufacturer", type="simple_array", length=255, nullable=true)
      */
-    private $country;
+    private $countryManufacturer;
 
     /**
      * @var \DateTime
@@ -577,14 +577,14 @@ class Product
     }
 
     /**
-     * Set country
+     * Set countryManufacturer
      *
-     * @param string $country
+     * @param string $countryManufacturer
      * @return Product
      */
-    public function setCountry($country)
+    public function setCountryManufacturer($countryManufacturer)
     {
-        $this->country = $country;
+        $this->countryManufacturer = $countryManufacturer;
 
         return $this;
     }
@@ -594,9 +594,9 @@ class Product
      *
      * @return string
      */
-    public function getCountry()
+    public function getCountryManufacturer()
     {
-        return $this->country;
+        return $this->countryManufacturer;
     }
 
     /**

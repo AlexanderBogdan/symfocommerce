@@ -117,7 +117,7 @@ class ProductType extends AbstractType
                     '16 лет' => '192',
                 ]
             ))
-            ->add('country', CountryType::class, array(
+            ->add('countryManufacturer', CountryType::class, array(
                 'required' => false,
             ))
         ;
