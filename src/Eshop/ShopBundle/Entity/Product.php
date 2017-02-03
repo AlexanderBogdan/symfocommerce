@@ -115,6 +115,13 @@ class Product
     private $ageTo;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="country", type="simple_array", length=255, nullable=true)
+     */
+    private $country;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="date_created", type="datetime")
@@ -567,6 +574,29 @@ class Product
     public function getAgeTo()
     {
         return $this->ageTo;
+    }
+
+    /**
+     * Set country
+     *
+     * @param string $country
+     * @return Product
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->country;
     }
 
     /**

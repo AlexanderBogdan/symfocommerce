@@ -5,6 +5,7 @@ namespace Eshop\ShopBundle\Form\Type;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -49,6 +50,7 @@ class ProductType extends AbstractType
             ->add('metaDescription', TextType::class)
             ->add('material', ChoiceType::class, array(
                 'required' => false,
+                'multiple' => true,
                 'choices' => [
                     'Дерево' => 'Wood',
                     'Пластик' => 'Plastic',
@@ -114,6 +116,9 @@ class ProductType extends AbstractType
                     '15 лет' => '180',
                     '16 лет' => '192',
                 ]
+            ))
+            ->add('country', CountryType::class, array(
+                'required' => false,
             ))
         ;
     }
