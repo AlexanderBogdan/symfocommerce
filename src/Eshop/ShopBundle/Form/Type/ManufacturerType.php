@@ -24,6 +24,9 @@ class ManufacturerType extends AbstractType
             ->add('file', FileType::class, array('required' => false))
             ->add('metaKeys', TextType::class)
             ->add('metaDescription', TextType::class)
+            ->add('country', CountryType::class, array(
+                'required' => false,
+            ))
         ;
     }
 

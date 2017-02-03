@@ -55,6 +55,13 @@ class Manufacturer
     /**
      * @var string
      *
+     * @ORM\Column(name="country", type="simple_array", length=255, nullable=true)
+     */
+    private $country;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="meta_keys", type="text", nullable=true)
      */
     private $metaKeys;
@@ -451,5 +458,28 @@ class Manufacturer
     public function getDateUpdated()
     {
         return $this->dateUpdated;
+    }
+
+    /**
+     * Set country
+     *
+     * @param string $country
+     * @return Product
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->country;
     }
 }
