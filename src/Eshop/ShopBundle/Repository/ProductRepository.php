@@ -42,11 +42,10 @@ class ProductRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
 
-        $qb->select(array('p', 'pi', 'pm', 'pfa', 'pfe'))
+        $qb->select(array('p', 'pi', 'pfa', 'pfe'))
             ->from('ShopBundle:Product', 'p')
             ->innerJoin('p.category', 'ca')
             ->leftJoin('p.images', 'pi')
-            ->leftJoin('p.measure', 'pm')
             ->leftJoin('p.favourites', 'pfa', 'WITH', 'pfa.user = :user') //if liked
             ->leftJoin('p.featured', 'pfe')
             ->where('ca = :category')
@@ -91,10 +90,9 @@ class ProductRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
 
-        $qb->select(array('p', 'pi', 'pm', 'pfa', 'pfe'))
+        $qb->select(array('p', 'pi', 'pfa', 'pfe'))
             ->from('ShopBundle:Product', 'p')
             ->leftJoin('p.images', 'pi')
-            ->leftJoin('p.measure', 'pm')
             ->innerJoin('p.favourites', 'pfa', 'WITH', 'pfa.user = :user') //only liked
             ->leftJoin('p.featured', 'pfe')
             ->andWhere('p.quantity <> 0')
@@ -143,10 +141,9 @@ class ProductRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
 
-        $qb->select(array('p', 'pi', 'pm', 'pfa', 'pfe'))
+        $qb->select(array('p', 'pi', 'pfa', 'pfe'))
             ->from('ShopBundle:Product', 'p')
             ->leftJoin('p.images', 'pi')
-            ->leftJoin('p.measure', 'pm')
             ->leftJoin('p.favourites', 'pfa', 'WITH', 'pfa.user = :user') //if liked
             ->leftJoin('p.featured', 'pfe')
             ->where('p.quantity <> 0')
@@ -192,10 +189,9 @@ class ProductRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
 
-        $qb->select(array('p', 'pi', 'pm', 'pfa', 'pfe'))
+        $qb->select(array('p', 'pi', 'pfa', 'pfe'))
             ->from('ShopBundle:Product', 'p')
             ->leftJoin('p.images', 'pi')
-            ->leftJoin('p.measure', 'pm')
             ->leftJoin('p.favourites', 'pfa', 'WITH', 'pfa.user = :user') //if liked
             ->leftJoin('p.featured', 'pfe')
             ->where('p.quantity <> 0')

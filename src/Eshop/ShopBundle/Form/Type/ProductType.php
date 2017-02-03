@@ -115,13 +115,7 @@ class ProductType extends AbstractType
                     '16 лет' => '192',
                 ]
             ))
-            ->add('measure', EntityType::class, array(
-                'required' => true,
-                'multiple' => false,
-                'expanded' => false,
-                'class' => 'Eshop\ShopBundle\Entity\Measure',
-                'choice_label' => 'name'))
-            ->add('measureQuantity', IntegerType::class);
+        ;
     }
 
     /**

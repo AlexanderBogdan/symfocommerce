@@ -2,7 +2,7 @@
 {% trans_default_domain 'ShopBundle' %}
 
 {% block title %}
-    {{ product.name }} ({{ product.measureQuantity }} {{ product.measure.name }})
+    {{ product.name }}
 {% endblock title %}
 
 {% block metadescription %}{{ product.metaDescription }}{% endblock %}
@@ -23,7 +23,7 @@
                 <li>
                     <a href="{{ path('manufacturer', {'slug' : product.manufacturer.slug}) }}">{{ product.manufacturer.name }}</a>
                 </li>
-                <li class="active">{{ product.name }} ({{ product.measureQuantity }} {{ product.measure.name }})</li>
+                <li class="active">{{ product.name }}</li>
             </ol>
         </div>
     </div>
@@ -47,8 +47,7 @@
         </div>
         <div class="col-md-7">
             <div class="caption">
-                <h1 class="group inner list-group-item-heading">{{ product.name }}
-                    ({{ product.measureQuantity }} {{ product.measure.name }})</h1>
+                <h1 class="group inner list-group-item-heading">{{ product.name }}</h1>
 
                 {% if product.quantity > 0 %}
                     <p class="lead price"><span>{{ product.price }}</span> {{ 'currency'|trans }}</p>
@@ -86,8 +85,7 @@
         </div>
     </div>
     <div class="row well well-lg">
-        <h3 class="group inner list-group-item-heading">{{ product.name }}
-            ({{ product.measureQuantity }} {{ product.measure.name }})</h3>
+        <h3 class="group inner list-group-item-heading">{{ product.name }}</h3>
 
         <div class="caption">
             <div class="group inner list-group-item-text">

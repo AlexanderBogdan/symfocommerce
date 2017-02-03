@@ -17,9 +17,6 @@
     <li {% if app.request.get('_route') == 'admin_manufacturer' %} class="active" {% endif %}>
         <a href="{{ path('admin_manufacturer') }}">{{ 'Manufacturers'|trans }}</a>
     </li>
-    <li {% if app.request.get('_route') == 'admin_measure' %} class="active" {% endif %}>
-        <a href="{{ path('admin_measure') }}">{{ 'Measures'|trans }}</a>
-    </li>
 </ul>
 
 <ul class="nav nav-sidebar">
