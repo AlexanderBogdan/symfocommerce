@@ -51,7 +51,12 @@ class LoadProductData implements FixtureInterface, ContainerAwareInterface, Orde
             $product->setManufacturer($manufacturers[array_rand($manufacturers)]);
 
             $product->setQuantity(mt_rand(1, 10));
-            $product->setPrice(mt_rand(1, 1000));
+            $product->setPrice(mt_rand(1, 500));
+            $product->setOldPrice(mt_rand(500, 700));
+            $product->setMaterial('Дерево');
+            $product->setMale('m');
+            $product->setAgeFrom(6);
+            $product->setAgeTo(12);
 
             $manager->persist($product);
         }
