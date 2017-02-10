@@ -75,6 +75,7 @@ class Category
     private $children;
 
     /**
+     * @Gedmo\TreeParent
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
