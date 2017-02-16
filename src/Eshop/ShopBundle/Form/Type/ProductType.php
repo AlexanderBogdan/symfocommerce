@@ -4,6 +4,7 @@ namespace Eshop\ShopBundle\Form\Type;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -27,23 +28,23 @@ class ProductType extends AbstractType
             ->add('description', TextareaType::class)
             ->add('type', EntityType::class, array(
                 'required' => true,
-                'multiple' => false,
+                'multiple' => true,
                 'class' => 'Eshop\ShopBundle\Entity\ProductType',
-                'choice_label' => 'name'
+                'choice_label' => 'name',
             ))
             ->add('price', NumberType::class)
             ->add('oldPrice', NumberType::class)
             ->add('category', EntityType::class, array(
                 'required' => true,
-                'multiple' => false,
+                'multiple' => true,
                 'class' => 'Eshop\ShopBundle\Entity\Category',
-                'choice_label' => 'name'
+                'choice_label' => 'name',
             ))
             ->add('manufacturer', EntityType::class, array(
                 'required' => true,
                 'multiple' => false,
                 'class' => 'Eshop\ShopBundle\Entity\Manufacturer',
-                'choice_label' => 'name'
+                'choice_label' => 'name',
             ))
             ->add('quantity', IntegerType::class)
             ->add('metaKeys', TextType::class)
@@ -56,14 +57,14 @@ class ProductType extends AbstractType
                     'Пластик' => 'Plastic',
                     'Резина' => 'Rubber',
                     'Металл' => 'Metal',
-                ]
+                ],
             ))
             ->add('male', ChoiceType::class, array(
                 'required' => false,
                 'choices' => [
                     'Мальчик' => 'm',
                     'Девочка' => 'f',
-                ]
+                ],
             ))
             ->add('ageFrom', ChoiceType::class, array(
                 'required' => false,
@@ -88,7 +89,7 @@ class ProductType extends AbstractType
                     '14 лет' => '168',
                     '15 лет' => '180',
                     '16 лет' => '192',
-                ]
+                ],
                 )
             )
             ->add('ageTo', ChoiceType::class, array(
@@ -115,10 +116,26 @@ class ProductType extends AbstractType
                     '14 лет' => '168',
                     '15 лет' => '180',
                     '16 лет' => '192',
-                ]
+                ],
             ))
             ->add('countryManufacturer', CountryType::class, array(
                 'required' => false,
+            ))
+            ->add('isNovelty', CheckboxType::class, array(
+                'required' => false,
+                )
+            )
+            ->add('purpose', ChoiceType::class, array(
+                'required' => false,
+                'choices' => [
+                    'Развитие мелкой моторики' =>'Развитие мелкой моторики',
+                    'Первые слова' => 'Первые слова',
+                    'Развитие координации' => 'Развитие координации',
+                    'Развитие воображения' => 'Развитие воображения',
+                    'Физическое развитие' => 'Физическое развитие',
+                    'Развитие органов чувств' => 'Развитие органов чувств',
+                    'Развитие мышления' => 'Развитие мышления',
+                ],
             ))
         ;
     }
