@@ -464,7 +464,7 @@ class Manufacturer
      * Set country
      *
      * @param string $country
-     * @return Product
+     * @return Manufacturer
      */
     public function setCountry($country)
     {

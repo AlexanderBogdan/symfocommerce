@@ -17,6 +17,10 @@ services:
     fos_user.doctrine_registry:
         alias: doctrine
 
+    app.photo_upload:
+        class:        Eshop\ShopBundle\Service\PhotoUploadService
+        arguments:    ["@doctrine.orm.entity_manager", '%upload_directory%']
+
     app.email_notifier:
         class:        Eshop\ShopBundle\Service\EmailNotifier
         arguments:    ["@swiftmailer.mailer", "@router", "@templating"]
