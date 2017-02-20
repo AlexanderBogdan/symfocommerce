@@ -48,6 +48,13 @@ class OrderProduct
     private $price;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_gift", type="boolean", nullable=true)
+     */
+    private $isGift;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -147,5 +154,28 @@ class OrderProduct
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * Set isGift
+     *
+     * @param boolean $isGift
+     * @return OrderProduct
+     */
+    public function setIsGift($isGift)
+    {
+        $this->isGift = $isGift;
+
+        return $this;
+    }
+
+    /**
+     * Get isGift
+     *
+     * @return boolean
+     */
+    public function getIsGift()
+    {
+        return $this->isGift;
     }
 }

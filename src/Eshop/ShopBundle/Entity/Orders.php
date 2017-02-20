@@ -78,6 +78,13 @@ class Orders
     private $sum;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_gift", type="boolean", nullable=true)
+     */
+    private $isGift;
+
+    /**
      * @ORM\OneToMany(targetEntity="OrderProduct", mappedBy="order")
      **/
     private $orderProducts;
@@ -312,5 +319,28 @@ class Orders
     public function getSum()
     {
         return $this->sum;
+    }
+
+    /**
+     * Set isGift
+     *
+     * @param boolean $isGift
+     * @return Orders
+     */
+    public function setIsGift($isGift)
+    {
+        $this->isGift = $isGift;
+
+        return $this;
+    }
+
+    /**
+     * Get isGift
+     *
+     * @return boolean
+     */
+    public function getIsGift()
+    {
+        return $this->isGift;
     }
 }
