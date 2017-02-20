@@ -66,11 +66,10 @@ class ProductRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
 
-        $qb->select(array('p', 'pi', 'pm', 'pfa', 'pfe'))
+        $qb->select(array('p', 'pi', 'pfa', 'pfe'))
             ->from('ShopBundle:Product', 'p')
             ->innerJoin('p.manufacturer', 'ma')
             ->leftJoin('p.images', 'pi')
-            ->leftJoin('p.measure', 'pm')
             ->leftJoin('p.favourites', 'pfa', 'WITH', 'pfa.user = :user') //if liked
             ->leftJoin('p.featured', 'pfe')
             ->where('ma.id = :manufacturer')
@@ -164,10 +163,15 @@ class ProductRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
 
-        $qb->select(array('p', 'pi', 'pm', 'pfa', 'pfe'))
+        $qb
+            ->select(array(
+                'p',
+                'pi',
+                'pfa',
+                'pfe'
+            ))
             ->from('ShopBundle:Product', 'p')
             ->leftJoin('p.images', 'pi')
-            ->leftJoin('p.measure', 'pm')
             ->leftJoin('p.favourites', 'pfa', 'WITH', 'pfa.user = :user') //if liked
             ->innerJoin('p.featured', 'pfe')
             ->where('p.quantity <> 0')
