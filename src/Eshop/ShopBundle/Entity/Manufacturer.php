@@ -55,7 +55,7 @@ class Manufacturer
     /**
      * @var string
      *
-     * @ORM\Column(name="country", type="simple_array", length=255, nullable=true)
+     * @ORM\Column(name="country", type="string", length=255, nullable=true)
      */
     private $country;
 
