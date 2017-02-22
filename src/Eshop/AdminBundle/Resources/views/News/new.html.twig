@@ -92,30 +92,30 @@
                         ['table', ['table']],
                         ['insert', ['link', 'picture']]
                     ]
-                }
+                },
                 // Another Variant to upload photos to summernote
-//                height: 200,
-//                onImageUpload: function(files, editor, welEditable) {
-//                    sendFile(files[0], editor, welEditable);
-//                }
+                height: 200,
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable);
+                }
             });
             // Another Variant to upload photos to summernote
-            {#function sendFile(file, editor, welEditable) {#}
-                {#data = new FormData();#}
-                {#data.append("file", file);#}
-                {#data.append("entity_name", 'news');#}
-                {#$.ajax({#}
-                    {#data: data,#}
-                    {#type: "POST",#}
-                    {#url: "{{ path('photo_summernote_upload') }}",#}
-                    {#cache: false,#}
-                    {#contentType: false,#}
-                    {#processData: false,#}
-                    {#success: function(url) {#}
-                        {#editor.insertImage(welEditable, url);#}
-                    {#}#}
-                {#});#}
-            {#}#}
+            function sendFile(file, editor, welEditable) {
+                data = new FormData();
+                data.append("file", file);
+                data.append("entity_name", 'news');
+                $.ajax({
+                    data: data,
+                    type: "POST",
+                    url: "{{ path('photo_summernote_upload') }}",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function(url) {
+                        editor.insertImage(welEditable, url);
+                    }
+                });
+            };
             $('.generate-slug').on('click', function (e) {
                 e.preventDefault();
                 //get field value

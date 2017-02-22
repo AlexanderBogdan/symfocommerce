@@ -39,9 +39,10 @@ class AdminController extends Controller
     public function uploadPicture(Request $request)
     {
         $em = $this->get('doctrine.orm.entity_manager');
+
         /** @var FileBag $files */
         if($files = $request->files) {
-//            var_dump($request);die;
+
             $file = $files->all()['file'];
             $entityName = $request->request->get('entity_name');
 
