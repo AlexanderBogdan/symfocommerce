@@ -6,6 +6,7 @@ use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\EntityRepository;
 use Eshop\ShopBundle\Entity\Category;
 use Eshop\ShopBundle\Entity\Manufacturer;
+use Eshop\ShopBundle\Entity\Product;
 use Eshop\UserBundle\Entity\User;
 
 /**
@@ -214,20 +215,31 @@ class ProductRepository extends EntityRepository
     /**
      * return products for admin
      *
-     * @return QueryBuilder
+     * @return mixed
      */
-    public function getAllProductsAdminQB()
+    public function getAllProductsAdminQB($forAutocomplete, $search = null)
     {
-        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb = $this->createQueryBuilder('p');
 
-        $qb->select(array('p', 'pi', 'pm', 'pc', 'pfe'))
-            ->from('ShopBundle:Product', 'p')
+        if ($forAutocomplete) {
+            $qb->select('p.name');
+            return $qb
+                ->getQuery()
+                ->getResult()
+                ;
+        }
+        $qb->select('p', 'pi', 'pm', 'pc', 'pfe');
+        $qb
             ->leftJoin('p.images', 'pi')
             ->leftJoin('p.manufacturer', 'pm')
             ->leftJoin('p.category', 'pc')
             ->leftJoin('p.featured', 'pfe')
             ->where($qb->expr()->neq('p.deleted', 1));
 
+        if ($search) {
+            $qb->andWhere('p.name LIKE :product_name')
+                ->setParameter('product_name', '%'.$search.'%');
+        }
         return $qb;
     }
 }

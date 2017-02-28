@@ -42,13 +42,28 @@ class CategoryRepository extends ClosureTreeRepository
      *
      * @return QueryBuilder
      */
-    public function getAllCategoriesAdminQB()
+    public function getAllCategoriesAdminQB($forAutocomplete, $search = null)
     {
-        $qb = $this->getEntityManager()
-            ->createQueryBuilder()
-            ->select('c')
-            ->from('ShopBundle:Category', 'c');
 
+        $qb = $this->createQueryBuilder('category');
+
+        if ($forAutocomplete) {
+            $qb
+                ->select('DISTINCT category.name')
+            ;
+
+            return $qb
+                ->getQuery()
+                ->getResult()
+            ;
+        }
+
+        $qb->select('category');
+
+        if (!empty($search)) {
+            $qb->andWhere('category.name LIKE :product_name')
+                ->setParameter('product_name', '%'.$search.'%');
+        }
         return $qb;
     }
 

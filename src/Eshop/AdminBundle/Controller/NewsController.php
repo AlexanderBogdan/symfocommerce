@@ -30,8 +30,11 @@ class NewsController extends Controller
         $em = $this->getDoctrine()->getManager();
         $newsRepository = $em->getRepository('ShopBundle:News');
         $paginator = $this->get('knp_paginator');
+        $search = $request->query->get('search') ?: null;
 
-        $qb = $newsRepository->getAllNewsAdminQB();
+        $qb = $newsRepository->getAllNewsAdminQB(false, $search);
+        $options = $newsRepository->getAllNewsAdminQB(true);
+
         $limit = $this->getParameter('admin_categories_pagination_count');
 
         $news = $paginator->paginate(
@@ -42,6 +45,7 @@ class NewsController extends Controller
 
         return array(
             'entities' => $news,
+            'options'  => $options,
         );
     }
 

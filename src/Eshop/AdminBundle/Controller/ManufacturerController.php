@@ -28,8 +28,11 @@ class ManufacturerController extends Controller
         $em = $this->getDoctrine()->getManager();
         $manufacturerRepository = $em->getRepository('ShopBundle:Manufacturer');
         $paginator = $this->get('knp_paginator');
+        $search = $request->query->get('search') ?: null;
 
-        $qb = $manufacturerRepository->getAllManufacturersAdminQB();
+        $qb = $manufacturerRepository->getAllManufacturersAdminQB(false, $search);
+        $options = $manufacturerRepository->getAllManufacturersAdminQB(true);
+
         $limit = $this->getParameter('admin_manufacturers_pagination_count');
 
         $manufacturers = $paginator->paginate(
@@ -40,6 +43,7 @@ class ManufacturerController extends Controller
 
         return array(
             'entities' => $manufacturers,
+            'options'  => $options,
         );
     }
 

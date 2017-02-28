@@ -41,12 +41,25 @@ class ManufacturerRepository extends EntityRepository
      *
      * @return QueryBuilder
      */
-    public function getAllManufacturersAdminQB()
+    public function getAllManufacturersAdminQB($forAutocomplete, $search = null)
     {
-        $qb = $this->getEntityManager()
-            ->createQueryBuilder()
-            ->select('m')
-            ->from('ShopBundle:Manufacturer', 'm');
+        $qb = $this
+            ->createQueryBuilder('m')
+            ->select('m');
+
+        if ($forAutocomplete) {
+            $qb->select('DISTINCT m.name');
+
+            return $qb
+                ->getQuery()
+                ->getResult()
+                ;
+        }
+
+        if (!empty($search)) {
+            $qb->andWhere('m.name LIKE :manufacturer_name')
+                ->setParameter('manufacturer_name', '%'.$search.'%');
+        }
 
         return $qb;
     }
