@@ -18,6 +18,20 @@
             {{ 'Create a new manufacturer'|trans }}
         </a>
     </p>
+    <form method="get" action="{{ path('admin_manufacturer') }}" class="pull-right">
+        <div class="input-group">
+            <select  class="manufacturers-autocomplete"
+                     name="search" tabindex="8"
+            >
+                {% for entity in options %}
+                    <option value="{{ entity.name }}">{{ entity.name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-sm btn-primary">
+                Поиск
+            </button>
+        </div>
+    </form>
     <table class="records_list table table-striped">
         <thead>
         <tr>

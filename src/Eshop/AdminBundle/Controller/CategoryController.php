@@ -30,8 +30,11 @@ class CategoryController extends Controller
         $em = $this->getDoctrine()->getManager();
         $categoryRepository = $em->getRepository('ShopBundle:Category');
         $paginator = $this->get('knp_paginator');
+        $search = $request->query->get('search') ?: null;
 
-        $qb = $categoryRepository->getAllCategoriesAdminQB();
+        $qb = $categoryRepository->getAllCategoriesAdminQB(false, $search);
+        $options = $categoryRepository->getAllCategoriesAdminQB(true);
+
         $limit = $this->getParameter('admin_categories_pagination_count');
 
         $categories = $paginator->paginate(
@@ -42,6 +45,7 @@ class CategoryController extends Controller
 
         return array(
             'entities' => $categories,
+            'options'  => $options,
         );
     }
 

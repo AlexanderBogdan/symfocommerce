@@ -154,6 +154,27 @@ class Product
     private $deleted;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_novelty", type="boolean", nullable=true)
+     */
+    private $isNovelty;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="rating", type="float", nullable=true)
+     */
+    private $rating;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="purpose", type="string", nullable=true)
+     */
+    private $purpose;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="products")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="CASCADE")
      **/
@@ -194,6 +215,8 @@ class Product
         $this->favourites = new ArrayCollection();
         $this->quantity = 1;
         $this->deleted = false;
+        $this->rating = 0;
+        $this->isNovelty = false;
     }
 
     public function __toString()
@@ -630,6 +653,75 @@ class Product
     public function getQuantity()
     {
         return $this->quantity;
+    }
+
+    /**
+     * Set isNovelty
+     *
+     * @param bool $isNovelty
+     * @return Product
+     */
+    public function setIsNovelty($isNovelty)
+    {
+        $this->isNovelty = $isNovelty;
+
+        return $this;
+    }
+
+    /**
+     * Get isNovelty
+     *
+     * @return integer
+     */
+    public function getIsNovelty()
+    {
+        return $this->isNovelty;
+    }
+
+    /**
+     * Set rating
+     *
+     * @param float $rating
+     * @return Product
+     */
+    public function setRating($rating)
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+    /**
+     * Get rating
+     *
+     * @return float
+     */
+    public function getRating()
+    {
+        return $this->rating;
+    }
+
+    /**
+     * Set purpose
+     *
+     * @param string $purpose
+     * @return Product
+     */
+    public function setPurpose($purpose)
+    {
+        $this->purpose = $purpose;
+
+        return $this;
+    }
+
+    /**
+     * Get purpose
+     *
+     * @return string
+     */
+    public function getPurpose()
+    {
+        return $this->purpose;
     }
 
     /**

@@ -2,12 +2,14 @@
 
 namespace Eshop\AdminBundle\Controller;
 
+use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Eshop\ShopBundle\Entity\News;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * News controller.
@@ -28,8 +30,11 @@ class NewsController extends Controller
         $em = $this->getDoctrine()->getManager();
         $newsRepository = $em->getRepository('ShopBundle:News');
         $paginator = $this->get('knp_paginator');
+        $search = $request->query->get('search') ?: null;
 
-        $qb = $newsRepository->getAllNewsAdminQB();
+        $qb = $newsRepository->getAllNewsAdminQB(false, $search);
+        $options = $newsRepository->getAllNewsAdminQB(true);
+
         $limit = $this->getParameter('admin_categories_pagination_count');
 
         $news = $paginator->paginate(
@@ -40,6 +45,7 @@ class NewsController extends Controller
 
         return array(
             'entities' => $news,
+            'options'  => $options,
         );
     }
 
@@ -101,6 +107,11 @@ class NewsController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            if ($editForm->get('file')->getData() !== null) { // if any file was updated
+                $file = $editForm->get('file')->getData();
+                $news->removeUpload(); // remove old file, see this at the bottom
+                $news->setPath(($file->getClientOriginalName())); // set Image Path because preUpload and upload method will not be called if any doctrine entity will not be changed. It tooks me long time to learn it too.
+            }
             $em = $this->getDoctrine()->getManager();
             $em->persist($news);
             $em->flush();

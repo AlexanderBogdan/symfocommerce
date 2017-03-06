@@ -4,6 +4,7 @@ namespace Eshop\AdminBundle\Controller;
 
 use Doctrine\ORM\EntityManager;
 use Eshop\ShopBundle\Entity\Image;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -28,11 +29,13 @@ class ProductController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->get('doctrine.orm.entity_manager');
         $productRepository = $em->getRepository('ShopBundle:Product');
         $paginator = $this->get('knp_paginator');
+        $search = $request->query->get('search') ?: null;
 
-        $qb = $productRepository->getAllProductsAdminQB();
+        $qb = $productRepository->getAllProductsAdminQB(false, $search);
+        $options = $productRepository->getAllProductsAdminQB(true);
         $limit = $this->getParameter('admin_products_pagination_count');
 
         $products = $paginator->paginate(
@@ -43,6 +46,7 @@ class ProductController extends Controller
 
         return array(
             'entities' => $products,
+            'options'  => $options,
         );
     }
 
@@ -224,4 +228,30 @@ class ProductController extends Controller
         $response = new Response($data, 200, $headers);
         return $response;
     }
+
+//    /**
+//     * @Route("/autocomplete/get-products", name="products_autocomplete")
+//     */
+//    public function getAllProductsAutocomplete(Request $request)
+//    {
+//        $em = $this->get('doctrine.orm.entity_manager');
+//        $result = [];
+//        $term = $request->query->get('term');
+//
+//        $entities = $em
+//            ->getRepository(Product::class)
+//            ->getForAutocomplete($term)
+//        ;
+//
+//        foreach($entities as $entity) {
+//            $result[] = [
+//                'id' => $entity->getId(),
+//                'value' => $entity->getName()
+//            ];
+//        }
+//
+//        $response = new JsonResponse($result);
+//
+//        return $response;
+//    }
 }

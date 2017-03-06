@@ -13,6 +13,19 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Orders
 {
+    const DELIVERY_TYPE_SELF_PICKUP = 1; // самовывоз
+    const DELIVERY_TYPE_NOVA_POSHTA = 2; // новая почта
+
+    const PAYMENT_TYPE_CASH_ON_DELIVERY = 1;
+    const PAYMENT_TYPE_CASH_COURIERS = 2;
+    const PAYMENT_TYPE_CREDIT_CARD = 3;
+    const PAYMENT_TYPE_PAY_ON_ACCOUNT = 4;
+
+    const ORDER_STATUS_NEW = 1;
+    const ORDER_STATUS_IN_PROGRESS = 2;
+    const ORDER_STATUS_SEND = 3;
+    const ORDER_STATUS_RECEIVED = 4;
+
     /**
      * @var integer
      *
@@ -78,9 +91,44 @@ class Orders
     private $sum;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_gift", type="boolean", nullable=true)
+     */
+    private $isGift;
+
+    /**
      * @ORM\OneToMany(targetEntity="OrderProduct", mappedBy="order")
      **/
     private $orderProducts;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="payment_type", type="integer", nullable=true)
+     */
+    private $paymentType;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="city", type="string", nullable=true)
+     */
+    private $city;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="status", type="integer", nullable=true)
+     */
+    private $status;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="delivery_type", type="string", nullable=true)
+     */
+    private $deliveryType;
 
     public function __construct() {
         $this->orderProducts = new ArrayCollection();
@@ -312,5 +360,120 @@ class Orders
     public function getSum()
     {
         return $this->sum;
+    }
+
+    /**
+     * Set isGift
+     *
+     * @param boolean $isGift
+     * @return Orders
+     */
+    public function setIsGift($isGift)
+    {
+        $this->isGift = $isGift;
+
+        return $this;
+    }
+
+    /**
+     * Get isGift
+     *
+     * @return boolean
+     */
+    public function getIsGift()
+    {
+        return $this->isGift;
+    }
+
+    /**
+     * Set paymentType
+     *
+     * @param string $paymentType
+     * @return Orders
+     */
+    public function setPaymentType($paymentType)
+    {
+        $this->paymentType = $paymentType;
+
+        return $this;
+    }
+
+    /**
+     * Get paymentType
+     *
+     * @return string
+     */
+    public function getPaymentType()
+    {
+        return $this->paymentType;
+    }
+
+    /**
+     * Set city
+     *
+     * @param string $city
+     * @return Orders
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    /**
+     * Get city
+     *
+     * @return string
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * Set status
+     *
+     * @param int $status
+     * @return Orders
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return int
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set deliveryType
+     *
+     * @param string $deliveryType
+     * @return Orders
+     */
+    public function setDeliveryType($deliveryType)
+    {
+        $this->deliveryType = $deliveryType;
+
+        return $this;
+    }
+
+    /**
+     * Get deliveryType
+     *
+     * @return string
+     */
+    public function getDeliveryType()
+    {
+        return $this->deliveryType;
     }
 }

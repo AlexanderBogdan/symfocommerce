@@ -4,6 +4,7 @@
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('bundles/shop/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('includes/custom/css/chosen/chosen.min.css') }}" rel="stylesheet">
 {% endblock stylesheets %}
 
 {% block body %}
@@ -87,6 +88,10 @@
     <script src="{{ asset('bundles/shop/js/bootstrap-confirmation.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bundles/shop/js/cart.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bundles/shop/js/scripts.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('includes/custom/js/chosen/chosen.jquery.min.js') }}"></script>
+    <script>
+        $('select').chosen();
+    </script>
     <script>
         //set path urls
         var urls = [];

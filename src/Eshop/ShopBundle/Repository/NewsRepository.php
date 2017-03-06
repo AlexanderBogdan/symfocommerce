@@ -32,15 +32,25 @@ class NewsRepository extends EntityRepository
     /**
      * query for admin paginator
      *
-     * @return QueryBuilder
+     * @return mixed
      */
-    public function getAllNewsAdminQB()
+    public function getAllNewsAdminQB($forAutocomplete, $search = null)
     {
-        $qb = $this->getEntityManager()
-            ->createQueryBuilder()
-            ->select('n')
-            ->from('ShopBundle:News', 'n');
+        $qb = $this->createQueryBuilder('n');
 
+        if ($forAutocomplete) {
+            $qb->select('DISTINCT n.title');
+
+            return $qb
+                ->getQuery()
+                ->getResult()
+                ;
+        }
+        $qb->select('n');
+        if (!empty($search)) {
+            $qb->andWhere('n.title LIKE :news_title')
+                ->setParameter('news_title', '%'.$search.'%');
+        }
         return $qb;
     }
 
