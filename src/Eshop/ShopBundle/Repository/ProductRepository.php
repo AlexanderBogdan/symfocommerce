@@ -164,10 +164,9 @@ class ProductRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
 
-        $qb->select(array('p', 'pi', 'pm', 'pfa', 'pfe'))
+        $qb->select(array('p', 'pi', 'pfa', 'pfe'))
             ->from('ShopBundle:Product', 'p')
             ->leftJoin('p.images', 'pi')
-            ->leftJoin('p.measure', 'pm')
             ->leftJoin('p.favourites', 'pfa', 'WITH', 'pfa.user = :user') //if liked
             ->innerJoin('p.featured', 'pfe')
             ->where('p.quantity <> 0')

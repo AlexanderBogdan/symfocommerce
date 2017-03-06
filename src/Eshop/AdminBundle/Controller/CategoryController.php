@@ -8,6 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Eshop\ShopBundle\Entity\Category;
+use Symfony\Component\HttpFoundation\Response;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 
 /**
  * Category controller.
@@ -159,5 +161,45 @@ class CategoryController extends Controller
             ->setAction($this->generateUrl('admin_category_delete', array('id' => $category->getId())))
             ->setMethod('DELETE')
             ->getForm();
+    }
+
+
+    /**
+     * Deletes a Category entity.
+     *
+     * @Route("/get/json/for/tree", name="get_json_for_tree")
+     * @Method("POST")
+     */
+    public function getJsonForTree()
+    {
+        $em = $this->get('doctrine.orm.entity_manager');
+//        var_dump('qqq');die;
+        $categories = $em->getRepository('ShopBundle:Category')
+            ->getRootNodes();
+//        var_dump($categories);
+die;
+
+        $resultJson = [];
+        /**
+         * @var int $key
+         * @var Category $category
+         */
+        foreach ($categories as $key => $category) {
+//            $childrens = $category->();
+
+            $resultJson[] = [
+                'id' => $category->getId(),
+                'title' => $category->getName(),
+                'has_children' => $category->getId(),
+                'id' => $category->getId(),
+
+            ];
+            $category->getchil();
+        }
+//        var_dump($categories);die;
+        $data = json_encode('hhh');
+//        $headers = array('Content-type' => 'application-json; charset=utf8');
+        $response = new Response($data, 200, $headers);
+        return $response;
     }
 }
