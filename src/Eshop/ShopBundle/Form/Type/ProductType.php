@@ -2,6 +2,7 @@
 
 namespace Eshop\ShopBundle\Form\Type;
 
+use Eshop\ShopBundle\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -39,6 +40,10 @@ class ProductType extends AbstractType
                 'multiple' => true,
                 'class' => 'Eshop\ShopBundle\Entity\Category',
                 'choice_label' => 'name',
+//                'query_builder' => function (CategoryRepository $r)
+//                {
+//                    return $r->getChildrenQueryBuilder();
+//                }
             ))
             ->add('manufacturer', EntityType::class, array(
                 'required' => true,

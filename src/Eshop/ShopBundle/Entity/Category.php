@@ -552,4 +552,8 @@ class Category
     {
         return $this->dateUpdated;
     }
+
+    public function getIndentedName() {
+        return str_repeat($this->parent." > ", $this->level) . $this->name;
+    }
 }

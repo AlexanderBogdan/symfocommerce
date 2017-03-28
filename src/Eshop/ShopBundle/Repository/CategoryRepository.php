@@ -97,4 +97,26 @@ class CategoryRepository extends ClosureTreeRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    /**
+     * query for admin paginator
+     *
+     * @return QueryBuilder
+     */
+    public function findForChosenTree()
+    {
+
+        $qb = $this->createQueryBuilder('category');
+
+//        if ($forAutocomplete) {
+            $qb
+                ->select('DISTINCT(category.name)', 'category.id', 'ch.id as children_id', 'ch.name as children_name')
+                ->leftJoin('category.children', 'ch')
+            ;
+
+            return $qb
+                ->getQuery()
+                ->getResult()
+                ;
+    }
 }
