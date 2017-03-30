@@ -179,8 +179,14 @@ class CategoryController extends Controller
         $categories = $em->getRepository('ShopBundle:Category')
             ->childrenHierarchy();
 
-        foreach ($categories as $category) {
-            $childrens = $category['__children'];
+//        var_dump($categories[0]['__children']);
+//        die;
+
+//        foreach ($categories as $category) {
+//            $childrens = $category['__children'];
+            $hierarchy = $this->rewriteArray($categories);
+//        var_dump($hierarchy);
+//        die;
 //            foreach ($childrens as $child) {
 //                if (count($childrens) != 0) {
 //                    $resultJson[] = [
@@ -192,9 +198,7 @@ class CategoryController extends Controller
 //                    ];
 //            }
 //            }
-            var_dump($category);
-            die;
-        }
+//        }
 
 //        $resultJson = [];
 //        /**
@@ -216,7 +220,38 @@ class CategoryController extends Controller
 //        var_dump($categories);die;
 //        $data = json_encode('hhh');
 //        $headers = array('Content-type' => 'application-json; charset=utf8');
-        $response = new Response($categories, 200);
+
+        $response = new Response(json_encode($hierarchy), 200);
         return $response;
+    }
+
+    public function rewriteArray($array, &$previousResult = null)
+    {
+//        if ($previousResult == null) {
+//            $result = [];
+//        } else {
+//            $result = $previousResult;
+//        }
+        foreach ($array as $category) {
+//            $childrens = $category['__children'];
+            $categoryResult = [
+                'id' => $category['id'],
+                'title' => $category['name'],
+                'level' => $category['level'],
+            ];
+            $previousResult = ($previousResult==null) ? [
+                'id' => $category['id'],
+                'title' => $category['name'],
+                'level' => $category['level'],
+            ] : array_merge($previousResult, $categoryResult);
+            if (count($category['__children']) > 0) {
+                $categoryResult['has_children'] = true;
+//var_dump($result);die;
+                $categoryResult['children'] = $this->rewriteArray($category['__children'], $previousResult);
+//                $this->
+                return $categoryResult;
+            }
+        }
+        return $categoryResult;
     }
 }
