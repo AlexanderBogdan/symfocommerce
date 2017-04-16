@@ -101,22 +101,20 @@ class CategoryRepository extends ClosureTreeRepository
     /**
      * query for admin paginator
      *
-     * @return QueryBuilder
+     * @return array
      */
     public function findForChosenTree()
     {
 
-        $qb = $this->createQueryBuilder('category');
+        $qb = $this->createQueryBuilder('category')
+            ->select('DISTINCT(category.name)', 'category.id', 'category.level', 'p.id as parent_id')
+            ->leftJoin('category.children', 'ch')
+            ->leftJoin('category.parent', 'p')
+            ->getQuery()
+            ->getResult()
+        ;
 
-//        if ($forAutocomplete) {
-            $qb
-                ->select('DISTINCT(category.name)', 'category.id', 'ch.id as children_id', 'ch.name as children_name')
-                ->leftJoin('category.children', 'ch')
+        return $qb
             ;
-
-            return $qb
-                ->getQuery()
-                ->getResult()
-                ;
     }
 }
