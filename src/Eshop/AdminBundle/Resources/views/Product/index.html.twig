@@ -13,13 +13,41 @@
 {% endblock title %}
 
 {% block page_content -%}
+
+    {% for flashMessage in app.session.flashbag.get('upload') %}
+        <div class="alert alert-success" role="alert">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+
     <h3>{{ 'Products list'|trans }}</h3>
-    <p>
-        <a href="{{ path('admin_product_new') }}">
+    <div class="col-md-12" style="margin-bottom: 10px;">
+        <a class="btn btn-primary" href="{{ path('admin_product_new') }}">
             <span class="glyphicon glyphicon-plus"></span>
             {{ 'Create new Product'|trans }}
         </a>
-    </p>
+    </div>
+    <div class="col-md-12">
+        {#<div class="col-md-12">#}
+            <form method="post" action="{{ path('import_csv') }}" enctype="multipart/form-data">
+
+                <div class="col-md-3">
+                    {{ form_widget(upload_csv_form.submitFile) }}
+                </div>
+                <div class="col-md-2">
+
+                    <input class="btn btn-primary" type="submit" value="{{ 'Import CSV'|trans }}">
+
+                </div>
+            </form>
+        {#</div>#}
+        {#<div class="col-md-12">#}
+            <a class="btn btn-primary" href="{{ path('export_csv') }}">
+                {#<span class="glyphicon glyphicon-download"></span>#}
+                {{ 'Export CSV'|trans }}
+            </a>
+        {#</div>#}
+    </div>
     <form method="get" action="{{ path('admin_product') }}" class="pull-right">
         <div class="input-group">
             <select  class="products-autocomplete"

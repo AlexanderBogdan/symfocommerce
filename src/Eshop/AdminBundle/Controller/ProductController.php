@@ -4,6 +4,7 @@ namespace Eshop\AdminBundle\Controller;
 
 use Doctrine\ORM\EntityManager;
 use Eshop\ShopBundle\Entity\Image;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Eshop\ShopBundle\Entity\Product;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Product controller.
@@ -44,9 +46,12 @@ class ProductController extends Controller
             $limit
         );
 
+        $uploadCsvForm = $this->uploadForm();
+
         return array(
             'entities' => $products,
             'options'  => $options,
+            'upload_csv_form' => $uploadCsvForm->createView(),
         );
     }
 
@@ -254,4 +259,56 @@ class ProductController extends Controller
 //
 //        return $response;
 //    }
+
+    /**
+     * @Route("/export/csv", name="export_csv")
+     * @Method({"GET", "POST"})
+     */
+    public function exportCsvAction(Request $request)
+    {
+        $importService = $this->get('app.import_export');
+
+        $result = $importService->exportProductsCSV();
+
+        return $result;
+    }
+
+    /**
+     * @Route("/import/csv", name="import_csv")
+     * @Method({"GET", "POST"})
+     */
+    public function importCsvAction(Request $request)
+    {
+        $importService = $this->get('app.import_export');
+
+        $uploadForm = $this->uploadForm();
+        $uploadForm->handleRequest($request);
+
+        if ($uploadForm->isSubmitted()) {
+            $file = $uploadForm->get('submitFile');
+
+            // Your csv file here when you hit submit button
+            $file = $file->getData();
+            $importService->importProductsCSV($file);
+        }
+
+        $this->get('session')->getFlashBag()->add(
+            'upload',
+            'CSV file was uploaded!'
+        );
+
+
+        return $this->redirectToRoute('admin_product');
+    }
+
+    private function uploadForm()
+    {
+         return $this->createFormBuilder()
+            ->add('submitFile', FileType::class, [
+                'label' => 'File to Submit'
+            ])
+            ->getForm()
+        ;
+    }
+
 }

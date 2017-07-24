@@ -23,7 +23,7 @@ services:
 
     app.import_export:
         class:        Eshop\ShopBundle\Service\PricesImportExportService
-        arguments:    ["@doctrine.orm.entity_manager", '%upload_directory%']
+        arguments:    ["@doctrine.orm.entity_manager"]
 
     app.email_notifier:
         class:        Eshop\ShopBundle\Service\EmailNotifier
