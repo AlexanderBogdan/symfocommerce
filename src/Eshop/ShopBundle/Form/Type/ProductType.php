@@ -35,15 +35,11 @@ class ProductType extends AbstractType
             ))
             ->add('price', NumberType::class)
             ->add('oldPrice', NumberType::class)
-            ->add('category', EntityType::class, array(
-                'required' => true,
+            ->add('category', null, array(
+                'required' => false,
                 'multiple' => true,
                 'class' => 'Eshop\ShopBundle\Entity\Category',
                 'choice_label' => 'name',
-//                'query_builder' => function (CategoryRepository $r)
-//                {
-//                    return $r->getChildrenQueryBuilder();
-//                }
             ))
             ->add('manufacturer', EntityType::class, array(
                 'required' => true,

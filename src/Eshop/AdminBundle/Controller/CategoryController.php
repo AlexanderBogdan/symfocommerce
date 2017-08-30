@@ -179,85 +179,17 @@ class CategoryController extends Controller
         $categories = $em->getRepository('ShopBundle:Category')
             ->findForChosenTree();
 
-
-//        foreach ($categories as $category) {
-//            $childrens = $category['__children'];
-            $hierarchy = $this->buildTree($categories);
-//        dump($hierarchy);
-//        die;
-//        var_dump($hierarchy);
-//        die;
-//            foreach ($childrens as $child) {
-//                if (count($childrens) != 0) {
-//                    $resultJson[] = [
-//                        'id' => $category->getId(),
-//                        'title' => $category->getName(),
-//                        'has_children' => $category->getId(),
-//                        'id' => $category->getId(),
-//
-//                    ];
-//            }
-//            }
-//        }
-
-//        $resultJson = [];
-//        /**
-//         * @var int $key
-//         * @var Category $category
-//         */
-//        foreach ($categories as $key => $category) {
-////            $childrens = $category->();
-//
-//            $resultJson[] = [
-//                'id' => $category->getId(),
-//                'title' => $category->getName(),
-//                'has_children' => $category->getId(),
-//                'id' => $category->getId(),
-//
-//            ];
-//            $category->getchil();
-//        }
-//        var_dump($categories);die;
-//        $data = json_encode('hhh');
-//        $headers = array('Content-type' => 'application-json; charset=utf8');
+        $hierarchy = $this->buildTree($categories);
 
         $response = new Response(json_encode(array_values($hierarchy)), 200);
         return $response;
     }
 
-//    public function rewriteArray($array, $previousResult = null, $parent = [])
-//    {
-////        if ($previousResult == null) {
-////            $branch = [];
-////        } else {
-////            $result = $previousResult;
-////        }
-////
-////            if ($parent != []) {
-////                $parentId = $parent['id'];
-////                $isChild = $parent['isChild'];
-////            }
-//            $categoryResult = [
-//                'id' => $category['id'],
-//                'title' => $category['name'],
-//                'level' => $category['level'],
-//            ];
-//            $previousResult = ($previousResult == null) ? [
-//                'id' => $category['id'],
-//                'title' => $category['name'],
-//                'level' => $category['level'],
-//            ] : array_merge($previousResult, $categoryResult);
-//            if (count($category['__children']) > 0) {
-//                $categoryResult['has_children'] = true;
-////var_dump($result);die;
-//                $categoryResult['children'] = $this->rewriteArray($category['__children'], $previousResult);
-////                $this->
-////            return $categoryResult;
-//            }
-//            $categoryResult['has_children'] = false;
-//        }
-//        return $categoryResult;
-//    }
+    /**
+     * @param array $elements
+     * @param int $parentId
+     * @return array
+     */
     public function buildTree(array &$elements, $parentId = 0) {
 
         $branch = array();
@@ -266,28 +198,20 @@ class CategoryController extends Controller
 
             if ($element['parent_id'] == $parentId) {
                 $children = $this->buildTree($elements, $element['id']);
+
                 if ($children) {
                     $element['children'] = $children;
+                    $element['has_children'] = true;
+                } else {
+                    $element['has_children'] = false;
                 }
+
                 $branch[$element['id']] = $element;
+
                 unset($element);
             }
         }
+
         return array_values($branch);
     }
-
-//    public function removeKeys(&$elements)
-//    {
-//        foreach ($elements as &$element) {
-//
-//                $children = $this->removeKeys($elements);
-//                if ($children) {
-//                    $element['children'] = $children;
-//                }
-//                $branch[$element['id']] = $element;
-////                unset($element);
-////            }
-//        }
-//        return $branch;
-//    }
 }

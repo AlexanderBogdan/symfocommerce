@@ -6,9 +6,9 @@
     <link href="{{ asset('bundles/shop/css/dropzone.min.css') }}" rel="stylesheet">
     <link href="{{ asset('bundles/shop/css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('bundles/shop/css/summernote.css') }}" rel="stylesheet">
-    <link rel='stylesheet' type='text/css' href="{{ asset('includes/custom/css/chosen/moreorless.css') }}" />
-    <link rel='stylesheet' type='text/css' href="{{ asset('includes/custom/css/chosen/treeselect.css') }}" />
-    <link rel='stylesheet' type='text/css' href="{{ asset('includes/custom/css/chosen/chosentree.css') }}" />
+    <link rel='stylesheet' type='text/css' href="{{ asset('includes/custom/css/chosen/moreorless.css') }}"/>
+    <link rel='stylesheet' type='text/css' href="{{ asset('includes/custom/css/chosen/treeselect.css') }}"/>
+    <link rel='stylesheet' type='text/css' href="{{ asset('includes/custom/css/chosen/chosentree.css') }}"/>
 {% endblock stylesheets %}
 
 {% block page_content -%}
@@ -175,6 +175,7 @@
     <script src="{{ asset('includes/custom/js/chosen/jquery.moreorless.js') }}"></script>
     <script src="{{ asset('includes/custom/js/chosen/jquery.treeselect.js') }}"></script>
     <script src="{{ asset('includes/custom/js/chosen/jquery.chosentree.js') }}"></script>
+    <script src="{{ asset('includes/custom/js/categories/categories-with-chosentree.js') }}"></script>
     <script>
         $(document).ready(function () {
             Dropzone.options.myDropzone = {
@@ -189,63 +190,34 @@
                     });
                 }
             };
-            var JSONObject = JSON.parse('{' +
-                    '"id":"01",' +
-                    '"title":"Node 01",' +
-                    '"has_children":true,' +
-                    '"level":1,' +
-                    '"children":[{' +
-                        '"id":"011",' +
-                        '"title":"Node 011",' +
-                        '"has_children":true,' +
-                        '"level":2,' +
-                        '"children":[{' +
-                            '"id":"0111",' +
-                            '"title":"Node 0111",' +
-                            '"has_children":false,' +
-                            '"level":3,' +
-                            '"children":[]}]}]}');
-//            test
-//            $('#eshop_shopbundle_product_category').chosentree({
-                $('#test').chosentree({
+
+            {#// Chosentree#}
+            $('#eshop_shopbundle_product_category').css('display', 'none');
+
+            $('#test').chosentree({
                 width: 500,
                 deepLoad: true,
+                showtree: true,
                 load: function (node, callback) {
-                    {#$.ajax({#}
-                        {#dataType: "json",#}
-                        {#method: "POST",#}
-                        {#url: "{{ path('get_json_for_tree') }}",#}
-                        {#success: function(obj) {#}
-                            {#console.log(obj);#}
-                            {#$.each(obj.folder, function (key, value) { // First Level#}
-                                {#console.log(value.name);#}
-                                {#$.each(value.children, function (k, v) {  // The contents inside stars#}
-                                    {#console.log(v);#}
-                                {#});#}
-                            {#});#}
-                        {#}#}
-                    {#});#}
-                    var json_obj = $.ajax({
-                        dataType: "json",
-                        method: "POST",
-                        url: "{{ path('get_json_for_tree') }}",
-                        success: function(obj) {
-                            console.log(obj);
-//                    $.each(obj, function (key, value) { // First Level
-//                        delete obj[key];
-//                        console.log(value.name);
-//                        $.each(value.children, function (k, v) {  // The contents inside stars
-//                            console.log(v);
-//                        });
-//                    });
-//                            console.log(obj);
-                            return callback(JSON.stringify(json_obj));
-                        }
-                    });
-                    console.log(json_obj);
-                    callback(JSON.stringify(json_obj));
-                    console.log(node);
-//                    console.log(callback);
+                    var json_obj = function () {
+                        var tmp = null;
+                        $.ajax({
+                            dataType: "json",
+                            method: "POST",
+                            async: false,
+                            url: "{{ path('get_json_for_tree') }}",
+                            success: function (obj) {
+                                tmp = obj;
+                            }
+                        });
+                        return tmp;
+                    }();
+
+                    for (var i = 0; i < json_obj.length; i++) {
+                        node.children[i] = json_obj[i];
+                    }
+
+                    callback(node);
                     /**
                      * This would typically call jQuery.ajax to load a new node
                      * on your server where you would return the tree structure
@@ -254,7 +226,6 @@
                 }
             });
 
-            console.log("{{ path('get_json_for_tree') }}");
             $('.generate-slug').on('click', function (e) {
                 e.preventDefault();
                 //get field value

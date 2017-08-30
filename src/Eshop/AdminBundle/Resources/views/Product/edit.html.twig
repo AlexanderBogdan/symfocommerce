@@ -7,6 +7,9 @@
     <link href="{{ asset('bundles/shop/fancybox/jquery.fancybox.css') }}" media="all" rel="stylesheet" type="text/css"/>
     <link href="{{ asset('bundles/shop/css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('bundles/shop/css/summernote.css') }}" rel="stylesheet">
+    <link rel='stylesheet' type='text/css' href="{{ asset('includes/custom/css/chosen/moreorless.css') }}"/>
+    <link rel='stylesheet' type='text/css' href="{{ asset('includes/custom/css/chosen/treeselect.css') }}"/>
+    <link rel='stylesheet' type='text/css' href="{{ asset('includes/custom/css/chosen/chosentree.css') }}"/>
 {% endblock stylesheets %}
 
 {% block page_content -%}
@@ -94,6 +97,7 @@
         {{ form_label(edit_form.category, 'Category'|trans) }}
         <div class="col-sm-10">
             {{ form_widget(edit_form.category) }}
+            <div id="test"></div>
         </div>
     </div>
     <div class="form-group">
@@ -222,6 +226,9 @@
     <script src="{{ asset('bundles/shop/js/bootstrap-confirmation.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bundles/shop/js/cart.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bundles/shop/js/summernote.min.js') }}"></script>
+    <script src="{{ asset('includes/custom/js/chosen/jquery.moreorless.js') }}"></script>
+    <script src="{{ asset('includes/custom/js/chosen/jquery.treeselect.js') }}"></script>
+    <script src="{{ asset('includes/custom/js/chosen/jquery.chosentree.js') }}"></script>
     <script>
         {% include '@Admin/Partials/initSummernote.js.twig' with {'height': 300} %}
         $(document).ready(function () {
@@ -267,6 +274,17 @@
                 console.log(imageEntityId);
                 removeImageEntity(imageEntityId, objToRemove);
             });
+
+
+            function second_passed() {
+                var selected_inputs = {{ categories }};
+                selected_inputs.forEach(function(item, i) {
+                    $('#choice_'+item).prop("checked", true);
+                });
+            }
+            setTimeout(second_passed, 1000)
+
+//            console.log($('.treenode-input [value='+item+']'));
         });
 
         //send request to remove image entity
@@ -288,6 +306,46 @@
                     console.log(data);
                 }
             });
+
         }
+        // Chosentree
+        $('#eshop_shopbundle_product_category').css('display', 'none');
+
+
+        $('#test').chosentree({
+            width: 500,
+            deepLoad: true,
+            showtree: true,
+            load: function (node, callback) {
+                var json_obj = function () {
+                    var tmp = null;
+                    $.ajax({
+                        dataType: "json",
+                        method: "POST",
+                        async: false,
+                        url: "{{ path('get_json_for_tree') }}",
+                        success: function (obj) {
+                            tmp = obj;
+                        }
+                    });
+                    return tmp;
+                }();
+
+                for (var i = 0; i < json_obj.length; i++) {
+                    node.children[i] = json_obj[i];
+                }
+                callback(node);
+
+                /**
+                 * This would typically call jQuery.ajax to load a new node
+                 * on your server where you would return the tree structure
+                 * for the provided node.
+                 */
+            }
+        });
+
+
+        // end of chosentree
+
     </script>
 {% endblock javascripts %}

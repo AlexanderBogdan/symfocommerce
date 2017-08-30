@@ -228,6 +228,7 @@ class ProductRepository extends EntityRepository
                 ->getResult()
                 ;
         }
+
         $qb->select('p', 'pi', 'pm', 'pc', 'pfe');
         $qb
             ->leftJoin('p.images', 'pi')
@@ -240,6 +241,7 @@ class ProductRepository extends EntityRepository
             $qb->andWhere('p.name LIKE :product_name')
                 ->setParameter('product_name', '%'.$search.'%');
         }
+
         return $qb;
     }
 }

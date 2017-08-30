@@ -53,7 +53,8 @@ class Product
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="ProductType", inversedBy="products")
+     * @ORM\ManyToMany(targetEntity="ProductType", inversedBy="products")
+//     * @ORM\JoinTable(name="product_types")
      * @ORM\JoinColumn(name="product_type_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $type;
@@ -89,7 +90,7 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="material", type="string", length=255)
+     * @ORM\Column(name="material", type="simple_array", length=255)
      */
     private $material;
 
@@ -117,7 +118,7 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="country_manufacturer", type="simple_array", length=255, nullable=true)
+     * @ORM\Column(name="country_manufacturer", type="string", length=255, nullable=true)
      */
     private $countryManufacturer;
 
@@ -175,13 +176,14 @@ class Product
     private $purpose;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="products")
+     * @ORM\ManyToMany(targetEntity="Category", inversedBy="products")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="CASCADE")
      **/
     private $category;
 
     /**
      * @ORM\ManyToOne(targetEntity="Manufacturer", inversedBy="products")
+     * @ORM\JoinTable(name="product_categories")
      * @ORM\JoinColumn(name="manufacturer_id", referencedColumnName="id", onDelete="CASCADE")
      **/
     private $manufacturer;
@@ -213,6 +215,7 @@ class Product
         $this->productOrders = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->favourites = new ArrayCollection();
+        $this->category = new ArrayCollection();
         $this->quantity = 1;
         $this->deleted = false;
         $this->rating = 0;
@@ -362,10 +365,10 @@ class Product
     /**
      * Set category
      *
-     * @param \Eshop\ShopBundle\Entity\Category $category
+     * @param array $category
      * @return Product
      */
-    public function setCategory(\Eshop\ShopBundle\Entity\Category $category = null)
+    public function setCategory($category)
     {
         $this->category = $category;
 
@@ -373,9 +376,7 @@ class Product
     }
 
     /**
-     * Get category
-     *
-     * @return \Eshop\ShopBundle\Entity\Category
+     * @return ArrayCollection
      */
     public function getCategory()
     {

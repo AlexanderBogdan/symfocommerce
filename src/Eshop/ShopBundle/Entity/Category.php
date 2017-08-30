@@ -126,7 +126,7 @@ class Category
     protected $file;
 
     /**
-     * @ORM\OneToMany(targetEntity="Product", mappedBy="category")
+     * @ORM\ManyToMany(targetEntity="Product", mappedBy="category")
      **/
     private $products;
 
