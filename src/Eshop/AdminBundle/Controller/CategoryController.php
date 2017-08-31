@@ -8,6 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Eshop\ShopBundle\Entity\Category;
+use Symfony\Component\HttpFoundation\Response;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 
 /**
  * Category controller.
@@ -163,5 +165,53 @@ class CategoryController extends Controller
             ->setAction($this->generateUrl('admin_category_delete', array('id' => $category->getId())))
             ->setMethod('DELETE')
             ->getForm();
+    }
+
+
+    /**
+     *
+     * @Route("/get/json/for/tree", name="get_json_for_tree")
+     * @Method("POST")
+     */
+    public function getJsonForTree()
+    {
+        $em = $this->get('doctrine.orm.entity_manager');
+        $categories = $em->getRepository('ShopBundle:Category')
+            ->findForChosenTree();
+
+        $hierarchy = $this->buildTree($categories);
+
+        $response = new Response(json_encode(array_values($hierarchy)), 200);
+        return $response;
+    }
+
+    /**
+     * @param array $elements
+     * @param int $parentId
+     * @return array
+     */
+    public function buildTree(array &$elements, $parentId = 0) {
+
+        $branch = array();
+
+        foreach ($elements as &$element) {
+
+            if ($element['parent_id'] == $parentId) {
+                $children = $this->buildTree($elements, $element['id']);
+
+                if ($children) {
+                    $element['children'] = $children;
+                    $element['has_children'] = true;
+                } else {
+                    $element['has_children'] = false;
+                }
+
+                $branch[$element['id']] = $element;
+
+                unset($element);
+            }
+        }
+
+        return array_values($branch);
     }
 }

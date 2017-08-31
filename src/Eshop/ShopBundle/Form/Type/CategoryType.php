@@ -26,7 +26,10 @@ class CategoryType extends AbstractType
             ->add('metaKeys', TextType::class)
             ->add('metaDescription', TextType::class)
             ->add('parent', EntityType::class, array(
-                    'class' => 'Eshop\ShopBundle\Entity\Category'
+                    'class' => 'Eshop\ShopBundle\Entity\Category',
+                    'empty_data'  => null,
+                    'required' => false,
+                    'placeholder' => 'Выберите категорию',
                 )
             )
         ;

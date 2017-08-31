@@ -3,6 +3,7 @@
 namespace Eshop\AdminBundle\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Eshop\ShopBundle\Entity\Category;
 use Eshop\ShopBundle\Entity\Image;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -64,8 +65,18 @@ class ProductController extends Controller
      */
     public function newAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+
         $product = new Product();
+
         $form = $this->createForm('Eshop\ShopBundle\Form\Type\ProductType', $product);
+
+        $formData = $request->request->get('eshop_shopbundle_product');
+        $categoriesArr = $this->addAllCategories($request);
+
+        $formData['category'] = $categoriesArr;
+        $request->request->set('eshop_shopbundle_product', $formData);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -75,7 +86,6 @@ class ProductController extends Controller
                 $imageIdArray = explode(',', $imageIdString);
                 array_pop($imageIdArray);
 
-                $em = $this->getDoctrine()->getManager();
                 $imageRepository = $em->getRepository('ShopBundle:Image');
                 foreach ($imageIdArray as $imageId) {
                     $image = $imageRepository->find($imageId);
@@ -85,7 +95,6 @@ class ProductController extends Controller
                 }
             }
 
-            $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
 
@@ -128,18 +137,25 @@ class ProductController extends Controller
      */
     public function editAction(Request $request, Product $product)
     {
+        $em = $this->getDoctrine()->getManager();
+
         $deleteForm = $this->createDeleteForm($product);
         $editForm = $this->createForm('Eshop\ShopBundle\Form\Type\ProductType', $product);
         $editForm->handleRequest($request);
+        $categories = $editForm->get('category')->getViewData();
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+
+
+            $categoriesArr = $this->addAllCategories($request);
+            $editForm->get('category')->setData($categoriesArr);
+
             //update uploaded images entities
             $imageIdString = $request->request->get('filenames');
             if ($imageIdString != '') {
                 $imageIdArray = explode(',', $imageIdString);
                 array_pop($imageIdArray);
 
-                $em = $this->getDoctrine()->getManager();
                 $imageRepository = $em->getRepository('ShopBundle:Image');
                 foreach ($imageIdArray as $imageId) {
                     $image = $imageRepository->find($imageId);
@@ -163,6 +179,7 @@ class ProductController extends Controller
 
         return array(
             'entity' => $product,
+            'categories' => json_encode($categories, JSON_NUMERIC_CHECK),
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
@@ -233,6 +250,7 @@ class ProductController extends Controller
         $response = new Response($data, 200, $headers);
         return $response;
     }
+
 
 //    /**
 //     * @Route("/autocomplete/get-products", name="products_autocomplete")
@@ -309,6 +327,26 @@ class ProductController extends Controller
             ])
             ->getForm()
         ;
+    }
+
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    private function addAllCategories($request)
+    {
+        $allPost = $request->request->all();
+
+        $treeselectArr = [];
+
+        foreach ($allPost as $key => $parameter) {
+            if(strpos($key, 'treeselect-') !== false) {
+                $treeselectArr[] = $parameter;
+            }
+        }
+
+        return $treeselectArr;
     }
 
 }
