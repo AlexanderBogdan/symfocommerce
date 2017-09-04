@@ -365,12 +365,29 @@ class Product
     /**
      * Set category
      *
-     * @param array $category
+     * @param mixed $category
      * @return Product
      */
     public function setCategory($category)
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Set category
+     *
+     * @param mixed $category
+     * @return Product
+     */
+    public function addCategory($category)
+    {
+        if (!$this->category->contains($category))
+        {
+            $this->category[] = $category;
+            $category->addProduct($this);
+        }
 
         return $this;
     }
@@ -511,7 +528,7 @@ class Product
     /**
      * Set material
      *
-     * @param string $material
+     * @param array $material
      * @return Product
      */
     public function setMaterial($material)

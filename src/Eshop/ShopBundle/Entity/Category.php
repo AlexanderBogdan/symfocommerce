@@ -207,7 +207,11 @@ class Category
      */
     public function addProduct(\Eshop\ShopBundle\Entity\Product $products)
     {
-        $this->products[] = $products;
+        if (!$this->products->contains($products))
+        {
+            $this->products[] = $products;
+            $products->addCategory($this);
+        }
 
         return $this;
     }
