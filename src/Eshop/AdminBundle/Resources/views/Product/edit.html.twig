@@ -278,10 +278,21 @@
 
             function second_passed() {
                 var selected_inputs = {{ categories }};
-                selected_inputs.forEach(function(item, i) {
-                    $('#choice_'+item).prop("checked", true);
+                selected_inputs.forEach(function (item, i) {
+                    var chzntree_choices_html,
+                        choice = $('#choice_' + item),
+                        choice_label = choice.next('.treeselect-title').html();
+                    choice.prop("checked", true);
+
+                    chzntree_choices_html = '<li class="search-choice" id="choice_' + item + '">' +
+                        '<span>' + choice_label + '</span>' +
+                        '<a class="search-choice-close" href="#"></a>' +
+                        '</li>';
+
+                    $('ul.chzntree-choices.chosentree-choices').prepend(chzntree_choices_html)
                 });
             }
+
             setTimeout(second_passed, 1000)
 
 //            console.log($('.treenode-input [value='+item+']'));

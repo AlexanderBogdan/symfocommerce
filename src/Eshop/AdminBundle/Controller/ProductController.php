@@ -141,14 +141,17 @@ class ProductController extends Controller
 
         $deleteForm = $this->createDeleteForm($product);
         $editForm = $this->createForm('Eshop\ShopBundle\Form\Type\ProductType', $product);
+
+        $formData = $request->request->get('eshop_shopbundle_product');
+        $categoriesArr = $this->addAllCategories($request);
+
+        $formData['category'] = $categoriesArr;
+        $request->request->set('eshop_shopbundle_product', $formData);
+
         $editForm->handleRequest($request);
         $categories = $editForm->get('category')->getViewData();
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-
-
-            $categoriesArr = $this->addAllCategories($request);
-            $editForm->get('category')->setData($categoriesArr);
 
             //update uploaded images entities
             $imageIdString = $request->request->get('filenames');
