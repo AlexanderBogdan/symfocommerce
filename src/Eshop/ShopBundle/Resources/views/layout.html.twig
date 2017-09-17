@@ -9,54 +9,106 @@
 
 {% block body %}
     <!-- Static navbar -->
+    <div class="row" style="font-size: 12px;width: 85%;margin: 0 auto;">
+        <div class="col-md-2">
+            Доставка и оплата
+        </div>
+        <div class="col-md-2">
+            Центр помощи покупателям
+        </div>
+        <div class="col-lg-2" style="width: 10%;">
+            Birthday club
+        </div>
+        <div class="col-md-1">
+            Gift list
+        </div>
+        <div class="col-md-2">
+            Узнать статус заказа
+        </div>
+        <div class="col-md-1">
+            Рус/Укр
+        </div>
+        <div class="col-md-2">
+            Войдите в личный кабинет
+        </div>
+    </div>
+    <div class="row" style="font-size: 12px;width: 85%;margin: 0 auto;">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ path('index_main') }}">{{ 'YOTO'|trans }}</a>
+        </div>
+        <div class="navbar-header">
+            <div class="col-md-12 text-center">0443556997</div>
+            <div class="col-md-12 text-center">
+                <button type="button" class="btn btn-action">Мы Вам перезвоним
+                </button>
+            </div>
+        </div>
+        <div class="navbar-header">
+            <form action="{{ path('search') }}" class="navbar-form" role="search" method="GET">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="{{ 'search.search'|trans }}"
+                           id="search_phrase" name="search_phrase">
+                        <span class="input-group-btn">
+                        <button type="reset" class="btn btn-default">
+                        <span class="glyphicon glyphicon-remove">
+                        <span class="sr-only">Close</span>
+                        </span>
+                        </button>
+                        <button type="submit" class="btn btn-default">
+                        <span class="glyphicon glyphicon-search">
+                        <span class="">Search</span>
+                        </span>
+                        </button>
+                        </span>
+                </div>
+            </form>
+        </div>
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+            </button>
+            <a class="navbar-brand" href="{{ path('index_main') }}"><span class="glyphicon glyphicon-heart"></span>{{ 'Избранное'|trans }}</a>
+        </div>
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed glyphicon glyphicon-heart" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+            </button>
+            <a class="navbar-brand" href="{{ path('index_main') }}"><span class="glyphicon glyphicon-shopping-cart"></span>{{ 'Корзина'|trans }}</a>
+        </div>
+    </div>
     <nav class="navbar navbar-default navbar-static-top" role="navigation">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                        aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{{ path('index_main') }}">{{ 'layout.navbar.sitename'|trans }}</a>
-            </div>
-            <div class="collapse navbar-collapse" id="navbar">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{{ path('index_main') }}">{{ 'layout.navbar.home'|trans }}</a></li>
-                    <li><a href="{{ path('news') }}">{{ 'layout.navbar.news'|trans }}</a></li>
-                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                        <li><a href="{{ path('favourites') }}">{{ 'layout.navbar.favourites'|trans }}</a></li>
-                    {% endif %}
-                    {{ render(controller('ShopBundle:LayoutsUtility:staticPagesMenu')) }}
 
-                    <li>
-                        <a href="{{ path('showcart') }}">
-                            <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
-                            {{ render(controller('ShopBundle:Cart:navbarCart')) }}
-                        </a>
-                    </li>
-                    {% include '@Shop/Partials/navbarAuthBlock.html.twig' %}
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="list-inline" style="font-size: 18px;width: 85%;margin: 0 auto;">
+                    {{ render(controller('ShopBundle:LayoutsUtility:categoriesMenu')) }}
                 </ul>
 
-                <form action="{{ path('search') }}" class="navbar-form" role="search" method="GET">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="{{ 'search.search'|trans }}"
-                               id="search_phrase" name="search_phrase">
-						<span class="input-group-btn">
-							<button type="reset" class="btn btn-default">
-								<span class="glyphicon glyphicon-remove">
-									<span class="sr-only">Close</span>
-								</span>
-                            </button>
-							<button type="submit" class="btn btn-default">
-								<span class="glyphicon glyphicon-search">
-									<span class="sr-only">Search</span>
-								</span>
-                            </button>
-						</span>
-                    </div>
-                </form>
+                {#<form action="{{ path('search') }}" class="navbar-form" role="search" method="GET">#}
+                    {#<div class="input-group">#}
+                        {#<input type="text" class="form-control" placeholder="{{ 'search.search'|trans }}"#}
+                               {#id="search_phrase" name="search_phrase">#}
+						{#<span class="input-group-btn">#}
+							{#<button type="reset" class="btn btn-default">#}
+								{#<span class="glyphicon glyphicon-remove">#}
+									{#<span class="sr-only">Close</span>#}
+								{#</span>#}
+                            {#</button>#}
+							{#<button type="submit" class="btn btn-default">#}
+								{#<span class="glyphicon glyphicon-search">#}
+									{#<span class="">Search</span>#}
+								{#</span>#}
+                            {#</button>#}
+						{#</span>#}
+                    {#</div>#}
+                {#</form>#}
 
             </div><!--/.nav-collapse -->
         </div>
@@ -64,7 +116,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-2">
-                {{ render(controller('ShopBundle:LayoutsUtility:categoriesMenu')) }}
+                {#{{ render(controller('ShopBundle:LayoutsUtility:categoriesMenu')) }}#}
             </div>
             <div class="col-md-8">
                 {% block page_content %}
@@ -72,7 +124,7 @@
                 <div class="row" id="latest-products"></div>
             </div>
             <div class="col-md-2">
-                {{ render(controller('ShopBundle:LayoutsUtility:manufacturersMenu')) }}
+                {#{{ render(controller('ShopBundle:LayoutsUtility:manufacturersMenu')) }}#}
             </div>
         </div>
     </div>

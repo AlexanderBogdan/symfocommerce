@@ -32,7 +32,8 @@ class CategoryRepository extends ClosureTreeRepository
                 ->andWhere('p.quantity <> 0');
         }
 
-        $qb->orderBy('c.' . $sort, $order);
+        $qb->orderBy('c.' . $sort, $order)
+        ->setMaxResults(10);
 
         return $qb->getQuery()->getResult();
     }

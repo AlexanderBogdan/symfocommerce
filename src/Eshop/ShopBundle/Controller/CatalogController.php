@@ -34,12 +34,14 @@ class CatalogController extends Controller
         $lastNews = $newsRepository->getLastNews();
         $latestProducts = $productRepository->getLatest(12, $this->getUser());
         $featuredProducts = $productRepository->getFeatured(12, $this->getUser());
-
+        $ages = Product::$age;
+//var_dump('tut');die;
         return array(
             'featured_products' => $featuredProducts,
             'latest_products' => $latestProducts,
             'news' => $lastNews,
-            'slides' => $slides
+            'slides' => $slides,
+            'age' => $ages,
         );
     }
 

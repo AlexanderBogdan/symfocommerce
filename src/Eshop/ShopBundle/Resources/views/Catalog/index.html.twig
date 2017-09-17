@@ -6,69 +6,149 @@
 {% endblock title %}
 
 {% block page_content -%}
-    {% if slides|length %}
-        <div class="row">
-            <div class="col-md-12">
-                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                    <!-- Indicators -->
-                    <ol class="carousel-indicators">
-                        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                        {% for slide in slides|slice(1) %}
-                            <li data-target="#carousel-example-generic" data-slide-to="{{ loop.index }}"></li>
+    <div class="col-md-12">
+        <div class="col-md-2">
+            <form action="{{ path('search') }}" class="navbar-form" role="search" method="GET">
+                <h4>Быстрый поиск</h4>
+                <div class="input-group">
+                    <label>Возраст ребёнка</label>
+                    <select class="form-control"
+                            id="search_phrase" name="age">
+                        {% for key, age  in age %}
+                            <option value="{{ age }}">{{ key }}</option>
                         {% endfor %}
-                    </ol>
-
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner" role="listbox">
-                        <div class="item active">
-                            <img src="{{ asset('uploads/images/' ~ slides.0.path) | imagine_filter('slide') }}" alt="{{ slides.0.name }}">
-                            <div class="carousel-caption">
-                            </div>
-                        </div>
-                        {% for slide in slides|slice(1) %}
-                            <div class="item">
-                                <img src="{{ asset('uploads/images/' ~ slide.path) | imagine_filter('slide') }}"
-                                     alt="{{ slide.name }}">
-                                <div class="carousel-caption">
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-
-                    <!-- Controls -->
-                    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                        <span class="sr-only">{{ 'slider.previous'|trans }}</span>
-                    </a>
-                    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                        <span class="sr-only">{{ 'slider.next'|trans }}</span>
-                    </a>
+                    </select>
+                    <label>Пол ребёнка</label>
+                    <select class="form-control"
+                            id="search_phrase" name="sex">
+                        <option>любой</option>
+                        <option value="m">для мальчиков</option>
+                        <option value="f">для девочек</option>
+                    </select>
+                    <label>Цена игрушки</label>
+                    <select class="form-control"
+                            id="search_phrase" name="price">
+                        <option value="0-1000">0-1000</option>
+                        <option value="1000-2000">1000-2000</option>
+                        <option value="2000-9000">2000-9000</option>
+                    </select>
+                    <button type="submit">Найти игрушку</button>
                 </div>
-            </div>
+            </form>
         </div>
-        <br/>
-    {% endif %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="well">
-                {% if news | length %}
-                    <h4>
-                        <strong>{{ news.title }}</strong>
-                    </h4>
-                    <div>
-                        {{ news.text|rawdescr|nl2br }}
-                    </div>
-                    <p class="pull-right">{{ news.date|date() }}</p>
-                {% else %}
-                    {{ 'news.nonews'|trans }}
-                {% endif %}
-            </div>
+        <div class="col-md-4">
+            Место для фото
+        </div>
+        <div class="col-md-2">
+            Место для фото
+        </div>
+        <div class="col-md-2">
+            Место для фото
         </div>
     </div>
+    {#{% if slides|length %}#}
+        {#<div class="row">#}
+            {#<div class="col-md-12">#}
+                {#<div class="col-md-2">#}
+                    {#<form action="{{ path('search') }}" class="navbar-form" role="search" method="GET">#}
+                        {#<h4>Быстрый поиск</h4>#}
+                        {#<div class="input-group">#}
+                            {#<label>Возраст ребёнка</label>#}
+                            {#<select class="form-control"#}
+                                    {#id="search_phrase" name="age">#}
+                                {#{% for key, age  in age %}#}
+                                    {#<option value="{{ age }}">{{ key }}</option>#}
+                                {#{% endfor %}#}
+                            {#</select>#}
+                            {#<label>Пол ребёнка</label>#}
+                            {#<select class="form-control"#}
+                                    {#id="search_phrase" name="sex">#}
+                                {#<option>любой</option>#}
+                                {#<option value="m">для мальчиков</option>#}
+                                {#<option value="f">для девочек</option>#}
+                            {#</select>#}
+                            {#<label>Цена игрушки</label>#}
+                            {#<select class="form-control"#}
+                                    {#id="search_phrase" name="price">#}
+                                {#<option value="0-1000">0-1000</option>#}
+                                {#<option value="1000-2000">1000-2000</option>#}
+                                {#<option value="2000-9000">2000-9000</option>#}
+                            {#</select>#}
+                            {#<button type="submit">Найти игрушку</button>#}
+                        {#</div>#}
+                    {#</form>#}
+                {#</div>#}
+                {#<div class="col-md-4">#}
+                    {#Место для фото#}
+                {#</div>#}
+                {#<div class="col-md-2">#}
+                    {#Место для фото#}
+                {#</div>#}
+                {#<div class="col-md-2">#}
+                    {#Место для фото#}
+                {#</div>#}
+            {#</div>#}
+            {#<div class="col-md-12">#}
+                {#<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">#}
+                    {#<!-- Indicators -->#}
+                    {#<ol class="carousel-indicators">#}
+                        {#<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>#}
+                        {#{% for slide in slides|slice(1) %}#}
+                            {#<li data-target="#carousel-example-generic" data-slide-to="{{ loop.index }}"></li>#}
+                        {#{% endfor %}#}
+                    {#</ol>#}
+
+                    {#<!-- Wrapper for slides -->#}
+                    {#<div class="carousel-inner" role="listbox">#}
+                        {#<div class="item active">#}
+                            {#<img src="{{ asset('uploads/images/' ~ slides.0.path) | imagine_filter('slide') }}" alt="{{ slides.0.name }}">#}
+                            {#<div class="carousel-caption">#}
+                            {#</div>#}
+                        {#</div>#}
+                        {#{% for slide in slides|slice(1) %}#}
+                            {#<div class="item">#}
+                                {#<img src="{{ asset('uploads/images/' ~ slide.path) | imagine_filter('slide') }}"#}
+                                     {#alt="{{ slide.name }}">#}
+                                {#<div class="carousel-caption">#}
+                                {#</div>#}
+                            {#</div>#}
+                        {#{% endfor %}#}
+                    {#</div>#}
+
+                    {#<!-- Controls -->#}
+                    {#<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">#}
+                        {#<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>#}
+                        {#<span class="sr-only">{{ 'slider.previous'|trans }}</span>#}
+                    {#</a>#}
+                    {#<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">#}
+                        {#<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>#}
+                        {#<span class="sr-only">{{ 'slider.next'|trans }}</span>#}
+                    {#</a>#}
+                {#</div>#}
+            {#</div>#}
+        {#</div>#}
+        {#<br/>#}
+    {#{% endif %}#}
+    {#<div class="row">#}
+        {#<div class="col-md-12">#}
+            {#<div class="well">#}
+                {#{% if news | length %}#}
+                    {#<h4>#}
+                        {#<strong>{{ news.title }}</strong>#}
+                    {#</h4>#}
+                    {#<div>#}
+                        {#{{ news.text|rawdescr|nl2br }}#}
+                    {#</div>#}
+                    {#<p class="pull-right">{{ news.date|date() }}</p>#}
+                {#{% else %}#}
+                    {#{{ 'news.nonews'|trans }}#}
+                {#{% endif %}#}
+            {#</div>#}
+        {#</div>#}
+    {#</div>#}
     <div class="row">
         <div class="col-md-12">
-            <h3 class="text-center">{{ 'layout.index.latestproducts'|trans }}</h3>
+            <h3 class="text-center">{{ 'Хиты продаж'|trans }}</h3>
             {% for product in latest_products %}
                 {{ include('@Shop/Partials/productPreview.html.twig') }}
             {% endfor %}
@@ -76,7 +156,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h3 class="text-center">{{ 'layout.index.featuredproducts'|trans }}</h3>
+            <h3 class="text-center">{{ 'Новые поступления'|trans }}</h3>
             {% for product in featured_products %}
                 {{ include('@Shop/Partials/productPreview.html.twig') }}
             {% endfor %}
