@@ -77,7 +77,7 @@ class Category
     /**
      * @Gedmo\TreeParent
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $parent;
 
@@ -126,7 +126,7 @@ class Category
     protected $file;
 
     /**
-     * @ORM\OneToMany(targetEntity="Product", mappedBy="category")
+     * @ORM\ManyToMany(targetEntity="Product", mappedBy="category")
      **/
     private $products;
 
@@ -207,7 +207,11 @@ class Category
      */
     public function addProduct(\Eshop\ShopBundle\Entity\Product $products)
     {
-        $this->products[] = $products;
+        if (!$this->products->contains($products))
+        {
+            $this->products[] = $products;
+            $products->addCategory($this);
+        }
 
         return $this;
     }
@@ -551,5 +555,9 @@ class Category
     public function getDateUpdated()
     {
         return $this->dateUpdated;
+    }
+
+    public function getIndentedName() {
+        return str_repeat($this->parent." > ", $this->level) . $this->name;
     }
 }

@@ -30,7 +30,7 @@ class ProductType
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="Product", mappedBy="type")
+     * @ORM\ManyToMany(targetEntity="Product", mappedBy="type")
      **/
     private $products;
 
@@ -71,6 +71,29 @@ class ProductType
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Add products
+     *
+     * @param \Eshop\ShopBundle\Entity\Product $products
+     * @return ProductType
+     */
+    public function addProduct(\Eshop\ShopBundle\Entity\Product $products)
+    {
+        $this->products[] = $products;
+
+        return $this;
+    }
+
+    /**
+     * Remove products
+     *
+     * @param \Eshop\ShopBundle\Entity\Product $products
+     */
+    public function removeProduct(\Eshop\ShopBundle\Entity\Product $products)
+    {
+        $this->products->removeElement($products);
     }
 }
 

@@ -3,7 +3,9 @@
 namespace Eshop\AdminBundle\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Eshop\ShopBundle\Entity\Category;
 use Eshop\ShopBundle\Entity\Image;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Eshop\ShopBundle\Entity\Product;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Product controller.
@@ -44,9 +47,12 @@ class ProductController extends Controller
             $limit
         );
 
+        $uploadCsvForm = $this->uploadForm();
+
         return array(
             'entities' => $products,
             'options'  => $options,
+            'upload_csv_form' => $uploadCsvForm->createView(),
         );
     }
 
@@ -59,8 +65,18 @@ class ProductController extends Controller
      */
     public function newAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+
         $product = new Product();
+
         $form = $this->createForm('Eshop\ShopBundle\Form\Type\ProductType', $product);
+
+        $formData = $request->request->get('eshop_shopbundle_product');
+        $categoriesArr = $this->addAllCategories($request);
+
+        $formData['category'] = $categoriesArr;
+        $request->request->set('eshop_shopbundle_product', $formData);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -70,7 +86,6 @@ class ProductController extends Controller
                 $imageIdArray = explode(',', $imageIdString);
                 array_pop($imageIdArray);
 
-                $em = $this->getDoctrine()->getManager();
                 $imageRepository = $em->getRepository('ShopBundle:Image');
                 foreach ($imageIdArray as $imageId) {
                     $image = $imageRepository->find($imageId);
@@ -80,7 +95,6 @@ class ProductController extends Controller
                 }
             }
 
-            $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
 
@@ -123,18 +137,28 @@ class ProductController extends Controller
      */
     public function editAction(Request $request, Product $product)
     {
+        $em = $this->getDoctrine()->getManager();
+
         $deleteForm = $this->createDeleteForm($product);
         $editForm = $this->createForm('Eshop\ShopBundle\Form\Type\ProductType', $product);
+
+        $formData = $request->request->get('eshop_shopbundle_product');
+        $categoriesArr = $this->addAllCategories($request);
+
+        $formData['category'] = $categoriesArr;
+        $request->request->set('eshop_shopbundle_product', $formData);
+
         $editForm->handleRequest($request);
+        $categories = $editForm->get('category')->getViewData();
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+
             //update uploaded images entities
             $imageIdString = $request->request->get('filenames');
             if ($imageIdString != '') {
                 $imageIdArray = explode(',', $imageIdString);
                 array_pop($imageIdArray);
 
-                $em = $this->getDoctrine()->getManager();
                 $imageRepository = $em->getRepository('ShopBundle:Image');
                 foreach ($imageIdArray as $imageId) {
                     $image = $imageRepository->find($imageId);
@@ -158,6 +182,7 @@ class ProductController extends Controller
 
         return array(
             'entity' => $product,
+            'categories' => json_encode($categories, JSON_NUMERIC_CHECK),
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
@@ -229,6 +254,7 @@ class ProductController extends Controller
         return $response;
     }
 
+
 //    /**
 //     * @Route("/autocomplete/get-products", name="products_autocomplete")
 //     */
@@ -254,4 +280,76 @@ class ProductController extends Controller
 //
 //        return $response;
 //    }
+
+    /**
+     * @Route("/export/csv", name="export_csv")
+     * @Method({"GET", "POST"})
+     */
+    public function exportCsvAction(Request $request)
+    {
+        $importService = $this->get('app.import_export');
+
+        $result = $importService->exportProductsCSV();
+
+        return $result;
+    }
+
+    /**
+     * @Route("/import/csv", name="import_csv")
+     * @Method({"GET", "POST"})
+     */
+    public function importCsvAction(Request $request)
+    {
+        $importService = $this->get('app.import_export');
+
+        $uploadForm = $this->uploadForm();
+        $uploadForm->handleRequest($request);
+
+        if ($uploadForm->isSubmitted()) {
+            $file = $uploadForm->get('submitFile');
+
+            // Your csv file here when you hit submit button
+            $file = $file->getData();
+            $importService->importProductsCSV($file);
+        }
+
+        $this->get('session')->getFlashBag()->add(
+            'upload',
+            'CSV file was uploaded!'
+        );
+
+
+        return $this->redirectToRoute('admin_product');
+    }
+
+    private function uploadForm()
+    {
+         return $this->createFormBuilder()
+            ->add('submitFile', FileType::class, [
+                'label' => 'File to Submit'
+            ])
+            ->getForm()
+        ;
+    }
+
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    private function addAllCategories($request)
+    {
+        $allPost = $request->request->all();
+
+        $treeselectArr = [];
+
+        foreach ($allPost as $key => $parameter) {
+            if(strpos($key, 'treeselect-') !== false) {
+                $treeselectArr[] = $parameter;
+            }
+        }
+
+        return $treeselectArr;
+    }
+
 }

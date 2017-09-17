@@ -47,7 +47,7 @@ class ProductRepository extends EntityRepository
             ->from('ShopBundle:Product', 'p')
             ->innerJoin('p.category', 'ca')
             ->leftJoin('p.images', 'pi')
-            ->leftJoin('p.favourites', 'pfa', 'WITH', 'pfa.user = :user') //if liked
+            ->leftJoin('p.favourites', 'pfa', 'WITH', 'pfa.user = :user')//if liked
             ->leftJoin('p.featured', 'pfe')
             ->where('ca = :category')
             ->andWhere('p.quantity <> 0')
@@ -71,7 +71,7 @@ class ProductRepository extends EntityRepository
             ->from('ShopBundle:Product', 'p')
             ->innerJoin('p.manufacturer', 'ma')
             ->leftJoin('p.images', 'pi')
-            ->leftJoin('p.favourites', 'pfa', 'WITH', 'pfa.user = :user') //if liked
+            ->leftJoin('p.favourites', 'pfa', 'WITH', 'pfa.user = :user')//if liked
             ->leftJoin('p.featured', 'pfe')
             ->where('ma.id = :manufacturer')
             ->andWhere('p.quantity <> 0')
@@ -93,7 +93,7 @@ class ProductRepository extends EntityRepository
         $qb->select(array('p', 'pi', 'pfa', 'pfe'))
             ->from('ShopBundle:Product', 'p')
             ->leftJoin('p.images', 'pi')
-            ->innerJoin('p.favourites', 'pfa', 'WITH', 'pfa.user = :user') //only liked
+            ->innerJoin('p.favourites', 'pfa', 'WITH', 'pfa.user = :user')//only liked
             ->leftJoin('p.featured', 'pfe')
             ->andWhere('p.quantity <> 0')
             ->andWhere($qb->expr()->neq('p.deleted', 1))
@@ -115,7 +115,7 @@ class ProductRepository extends EntityRepository
             ->from('ShopBundle:Product', 'p')
             ->leftJoin('p.images', 'pi')
             ->leftJoin('p.measure', 'pm')
-            ->leftJoin('p.favourites', 'pfa', 'WITH', 'pfa.user = :user') //if liked
+            ->leftJoin('p.favourites', 'pfa', 'WITH', 'pfa.user = :user')//if liked
             ->leftJoin('p.featured', 'pfe')
             ->where('p.quantity <> 0')
             ->andWhere($qb->expr()->neq('p.deleted', 1))
@@ -144,7 +144,7 @@ class ProductRepository extends EntityRepository
         $qb->select(array('p', 'pi', 'pfa', 'pfe'))
             ->from('ShopBundle:Product', 'p')
             ->leftJoin('p.images', 'pi')
-            ->leftJoin('p.favourites', 'pfa', 'WITH', 'pfa.user = :user') //if liked
+            ->leftJoin('p.favourites', 'pfa', 'WITH', 'pfa.user = :user')//if liked
             ->leftJoin('p.featured', 'pfe')
             ->where('p.quantity <> 0')
             ->andWhere($qb->expr()->neq('p.deleted', 1))
@@ -173,7 +173,7 @@ class ProductRepository extends EntityRepository
             ))
             ->from('ShopBundle:Product', 'p')
             ->leftJoin('p.images', 'pi')
-            ->leftJoin('p.favourites', 'pfa', 'WITH', 'pfa.user = :user') //if liked
+            ->leftJoin('p.favourites', 'pfa', 'WITH', 'pfa.user = :user')//if liked
             ->innerJoin('p.featured', 'pfe')
             ->where('p.quantity <> 0')
             ->andWhere($qb->expr()->neq('p.deleted', 1))
@@ -197,7 +197,7 @@ class ProductRepository extends EntityRepository
         $qb->select(array('p', 'pi', 'pfa', 'pfe'))
             ->from('ShopBundle:Product', 'p')
             ->leftJoin('p.images', 'pi')
-            ->leftJoin('p.favourites', 'pfa', 'WITH', 'pfa.user = :user') //if liked
+            ->leftJoin('p.favourites', 'pfa', 'WITH', 'pfa.user = :user')//if liked
             ->leftJoin('p.featured', 'pfe')
             ->where('p.quantity <> 0')
             ->andWhere('p.id IN (:ids)')
@@ -225,9 +225,9 @@ class ProductRepository extends EntityRepository
             $qb->select('p.name');
             return $qb
                 ->getQuery()
-                ->getResult()
-                ;
+                ->getResult();
         }
+
         $qb->select('p', 'pi', 'pm', 'pc', 'pfe');
         $qb
             ->leftJoin('p.images', 'pi')
@@ -238,8 +238,27 @@ class ProductRepository extends EntityRepository
 
         if ($search) {
             $qb->andWhere('p.name LIKE :product_name')
-                ->setParameter('product_name', '%'.$search.'%');
+                ->setParameter('product_name', '%' . $search . '%');
         }
+
         return $qb;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProductsForCSV()
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->select(
+            'p.id',
+            'p.name',
+            'p.price'
+            );
+
+        return $qb->getQuery()
+            ->getArrayResult()
+        ;
     }
 }

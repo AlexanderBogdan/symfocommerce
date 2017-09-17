@@ -6,7 +6,7 @@
 
 
 #php app/console doctrine:migrations:migrate
-#echo -e "All migrations was executed."
+#echo -e "All migrations was executed."2
 
 # Clear cache
 rm -R var/cache/*
@@ -21,5 +21,5 @@ echo -e "Symlinks were updated successfully."
 #echo -e "Symlinks were installed successfully."
 
 # Set needed permissions for app folders
-chmod 777 -R var/cache/ var/logs/
+chmod 777 -R var/cache/ var/logs/ var/sessions
 echo -e "All post deploy procedures are finished successfully!"
